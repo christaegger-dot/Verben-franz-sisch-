@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🇫🇷 Französisch Lernplattform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: white;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header h1 {
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #fff, #e8f4f8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.15);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            min-width: 150px;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        .learning-modules {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1400px;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .module-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255,255,255,0.2);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .module-card.interactive {
+            border-left: 4px solid #4CAF50;
+        }
+
+        .module-card.reference {
+            border-left: 4px solid #2196F3;
+        }
+
+        .module-icon {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .module-title {
+            font-size: 1.6em;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .module-description {
+            font-size: 1em;
+            opacity: 0.9;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .module-features {
+            list-style: none;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+
+        .module-features li {
+            padding: 3px 0;
+        }
+
+        .module-features li:before {
+            content: "✓ ";
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .start-btn {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .start-btn.reference {
+            background: linear-gradient(45deg, #2196F3, #1976D2);
+        }
+
+        .progress-section {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .progress-title {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+
+        .tips-section {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 30px;
+        }
+
+        .tips-title {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .tip-card {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .tip-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #4CAF50;
+        }
+
+        .section-divider {
+            width: 100%;
+            max-width: 1400px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .section-divider h2 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            color: #4CAF50;
+        }
+
+        .section-divider p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5em;
+            }
+            
+            .learning-modules {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                gap: 15px;
+            }
+            
+            .stat-card {
+                min-width: 120px;
+                padding: 15px;
+            }
+            
+            .module-card {
+                padding: 20px;
+            }
+            
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .module-icon {
+                font-size: 3em;
+            }
+            
+            .module-title {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🇫🇷 Französisch Lernplattform</h1>
+        <p>Deine komplette Lernumgebung für französische Verben und Grammatik</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat-card">
+            <span class="stat-number">32+</span>
+            <span class="stat-label">Verben</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">5</span>
+            <span class="stat-label">Zeitformen</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">8</span>
+            <span class="stat-label">Module</span>
+        </div>
+    </div>
+
+    <div class="progress-section">
+        <div class="progress-title">🎯 Dein Lernfortschritt</div>
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: 0%" id="overallProgress"></div>
+        </div>
+        <p style="text-align: center; margin-top: 10px; opacity: 0.9;">
+            Starte mit den Lernkarten und arbeite dich durch alle Module!
+        </p>
+    </div>
+
+    <div class="section-divider">
+        <h2>🎮 Interaktive Lernmodule</h2>
+        <p>Spielerisch lernen mit sofortigem Feedback</p>
+    </div>
+
+    <div class="learning-modules">
+        <div class="module-card interactive" onclick="window.location.href='cards.html'">
+            <span class="module-icon">📚</span>
+            <h2 class="module-title">Verb-Lernkarten</h2>
+            <p class="module-description">
+                Interaktive Karteikarten mit 32 wichtigen französischen Verben
+            </p>
+            <ul class="module-features">
+                <li>5 Zeitformen pro Verb</li>
+                <li>3 Schwierigkeitsstufen</li>
+                <li>Touch-Gesten & Tastatur</li>
+                <li>Fortschrittsanzeige</li>
+            </ul>
+            <a href="cards.html" class="start-btn">Lernkarten starten</a>
+        </div>
+
+        <div class="module-card interactive" onclick="window.location.href='quiz.html'">
+            <span class="module-icon">🧠</span>
+            <h2 class="module-title">Interaktives Quiz</h2>
+            <p class="module-description">
+                Teste dein Wissen mit Multiple-Choice-Fragen und sofortigem Feedback
+            </p>
+            <ul class="module-features">
+                <li>3 Schwierigkeitsstufen</li>
+                <li>4 Fragetypen</li>
+                <li>Sofortiges Feedback</li>
+                <li>Detaillierte Auswertung</li>
+            </ul>
+            <a href="quiz.html" class="start-btn">Quiz starten</a>
+        </div>
+
+        <div class="module-card interactive" onclick="window.location.href='memory.html'">
+            <span class="module-icon">🎮</span>
+            <h2 class="module-title">Memory-Spiel</h2>
+            <p class="module-description">
+                Spielerisch lernen durch das Finden von Verb-Übersetzungspaaren
+            </p>
+            <ul class="module-features">
+                <li>3 Schwierigkeitsstufen</li>
+                <li>Timer & Statistiken</li>
+                <li>Achievements System</li>
+                <li>Tipp-Funktion</li>
+            </ul>
+            <a href="memory.html" class="start-btn">Memory spielen</a>
+        </div>
+
+        <div class="module-card interactive" onclick="window.location.href='regeln.html'">
+            <span class="module-icon">📖</span>
+            <h2 class="module-title">Grammatikregeln</h2>
+            <p class="module-description">
+                Wichtige Regeln und Ausnahmen für alle französischen Zeitformen
+            </p>
+            <ul class="module-features">
+                <li>15 wichtige Regeln</li>
+                <li>Interaktive Karten</li>
+                <li>Lerntipps & Eselsbrücken</li>
+                <li>Farbkodierte Kategorien</li>
+            </ul>
+            <a href="regeln.html" class="start-btn">Regeln lernen</a>
+        </div>
+    </div>
+
+    <div class="section-divider">
+        <h2>📚 Nachschlagewerke & Tabellen</h2>
+        <p>Detaillierte Übersichten für alle Verbgruppen und Zeiten</p>
+    </div>
+
+    <div class="learning-modules">
+        <div class="module-card reference" onclick="window.location.href='er.html'">
+            <span class="module-icon">📝</span>
+            <h2 class="module-title">-er Verben</h2>
+            <p class="module-description">
+                Komplette Übersicht der ersten Verbgruppe mit allen Regeln
+            </p>
+            <ul class="module-features">
+                <li>Konjugationstabellen</li>
+                <li>Besonderheiten & Ausnahmen</li>
+                <li>Häufige Verben</li>
+                <li>Lerntipps</li>
+            </ul>
+            <a href="er.html" class="start-btn reference">Nachschlagen</a>
+        </div>
+
+        <div class="module-card reference" onclick="window.location.href='ir.html'">
+            <span class="module-icon">📝</span>
+            <h2 class="module-title">-ir Verben</h2>
+            <p class="module-description">
+                Regelmäßige und unregelmäßige -ir Verben mit Unterschieden
+            </p>
+            <ul class="module-features">
+                <li>Regelmäßige vs. unregelmäßige</li>
+                <li>Konjugationsmuster</li>
+                <li>Bewegungsverben</li>
+                <li>Vergleichstabellen</li>
+            </ul>
+            <a href="ir.html" class="start-btn reference">Nachschlagen</a>
+        </div>
+
+        <div class="module-card reference" onclick="window.location.href='etre-avoir.html'">
+            <span class="module-icon">⭐</span>
+            <h2 class="module-title">être & avoir</h2>
+            <p class="module-description">
+                Die wichtigsten Verben komplett - Hilfsverben und Vollverben
+            </p>
+            <ul class="module-features">
+                <li>Alle Zeitformen</li>
+                <li>Hilfsverb-Verwendung</li>
+                <li>Wichtige Ausdrücke</li>
+                <li>Unterschiede zu Deutsch</li>
+            </ul>
+            <a href="etre-avoir.html" class="start-btn reference">Nachschlagen</a>
+        </div>
+
+        <div class="module-card reference" onclick="window.location.href='zeiten.html'">
+            <span class="module-icon">⏰</span>
+            <h2 class="module-title">Zeiten & Partizipien</h2>
+            <p class="module-description">
+                Komplette Partizip-Tabelle und Verwendungsregeln aller Zeiten
+            </p>
+            <ul class="module-features">
+                <li>Partizip-Tabelle (50+ Verben)</li>
+                <li>avoir/être Regeln</li>
+                <li>Zeitenverwendung</li>
+                <li>Vergleichstabellen</li>
+            </ul>
+            <a href="zeiten.html" class="start-btn reference">Nachschlagen</a>
+        </div>
+    </div>
+
+    <div class="tips-section">
+        <h2 class="tips-title">💡 Lerntipps für deinen Test</h2>
+        <div class="tips-grid">
+            <div class="tip-card">
+                <div class="tip-title">🎯 Optimale Reihenfolge</div>
+                <p>1. Lernkarten → 2. Zeiten & Partizipien → 3. Quiz → 4. Memory zur Festigung</p>
+            </div>
+            <div class="tip-card">
+                <div class="tip-title">⏰ Zeitmanagement</div>
+                <p>20 Min Lernkarten, 15 Min Nachschlagewerke, 15 Min Quiz, 10 Min Memory</p>
+            </div>
+            <div class="tip-card">
+                <div class="tip-title">🔄 Wiederholung</div>
+                <p>Schwierige Verben mehrmals wiederholen, bis sie automatisch sitzen</p>
+            </div>
+            <div class="tip-card">
+                <div class="tip-title">📱 Unterwegs lernen</div>
+                <p>Alle Module funktionieren perfekt auf dem Smartphone</p>
+            </div>
+            <div class="tip-card">
+                <div class="tip-title">📚 Nachschlagen</div>
+                <p>Nutze die Nachschlagewerke bei Unsicherheiten während des Lernens</p>
+            </div>
+            <div class="tip-card">
+                <div class="tip-title">🎮 Spielerisch lernen</div>
+                <p>Memory-Spiel zur Auflockerung zwischen intensiven Lernphasen</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple progress tracking
+        function updateProgress() {
+            const visited = JSON.parse(localStorage.getItem('visitedModules') || '[]');
+            const progress = (visited.length / 8) * 100;
+            document.getElementById('overallProgress').style.width = progress + '%';
+        }
+
+        // Track module visits
+        function trackVisit(module) {
+            const visited = JSON.parse(localStorage.getItem('visitedModules') || '[]');
+            if (!visited.includes(module)) {
+                visited.push(module);
+                localStorage.setItem('visitedModules', JSON.stringify(visited));
+            }
+            updateProgress();
+        }
+
+        // Initialize progress on page load
+        updateProgress();
+
+        // Add click tracking to module cards
+        document.querySelectorAll('.module-card').forEach((card, index) => {
+            card.addEventListener('click', () => {
+                const modules = ['cards', 'quiz', 'memory', 'regeln', 'er', 'ir', 'etre-avoir', 'zeiten'];
+                trackVisit(modules[index]);
+            });
+        });
+    </script>
+</body>
+</html>
+

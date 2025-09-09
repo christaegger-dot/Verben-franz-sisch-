@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Französisch Memory - Erweitert</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            margin: 10px 0;
+            opacity: 0.9;
+        }
+
+        .nav-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .difficulty-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .difficulty-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+            border: 2px solid transparent;
+        }
+
+        .difficulty-btn.active {
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            border-color: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .difficulty-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .score-board {
+            background: rgba(255,255,255,0.2);
+            padding: 15px 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .score-number {
+            font-size: 1.8em;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .score-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .progress-bar {
+            width: 100%;
+            max-width: 900px;
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .memory-grid {
+            display: grid;
+            gap: 15px;
+            max-width: 900px;
+            width: 100%;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .grid-easy {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .grid-medium {
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .grid-hard {
+            grid-template-columns: repeat(6, 1fr);
+        }
+
+        .memory-card {
+            aspect-ratio: 1;
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            min-height: 80px;
+        }
+
+        .memory-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+
+        .memory-card.flipped {
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            color: white;
+            transform: rotateY(180deg);
+            animation: flipCard 0.6s ease;
+        }
+
+        .memory-card.matched {
+            background: linear-gradient(145deg, #2196F3, #1976D2);
+            color: white;
+            cursor: default;
+            border-color: rgba(255,255,255,0.5);
+            animation: matchPulse 0.8s ease;
+        }
+
+        .memory-card.wrong {
+            background: linear-gradient(145deg, #f44336, #d32f2f);
+            color: white;
+            animation: wrongShake 0.6s ease;
+        }
+
+        .card-content {
+            font-size: 1em;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            word-break: break-word;
+            line-height: 1.2;
+        }
+
+        .card-back {
+            background: linear-gradient(145deg, #9c27b0, #7b1fa2);
+            color: white;
+            font-size: 1.8em;
+        }
+
+        .card-type {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 0.7em;
+            background: rgba(0,0,0,0.2);
+            padding: 2px 6px;
+            border-radius: 8px;
+            opacity: 0.8;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            font-size: 1em;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(145deg, #ff9800, #f57c00);
+            color: white;
+        }
+
+        .btn-info {
+            background: linear-gradient(145deg, #2196F3, #1976D2);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .victory-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: none;
+            max-width: 90vw;
+            backdrop-filter: blur(20px);
+        }
+
+        .victory-message.show {
+            display: block;
+            animation: victoryAppear 0.8s ease;
+        }
+
+        .victory-message h2 {
+            margin: 0 0 20px 0;
+            font-size: 2.5em;
+        }
+
+        .victory-message p {
+            margin: 10px 0;
+            font-size: 1.2em;
+        }
+
+        .victory-stats {
+            background: rgba(255,255,255,0.2);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .victory-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .achievements {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 999;
+        }
+
+        .achievement {
+            background: linear-gradient(145deg, #ff9800, #f57c00);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transform: translateX(300px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            max-width: 250px;
+        }
+
+        .achievement.show {
+            transform: translateX(0);
+        }
+
+        .hint-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 998;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hint-content {
+            background: white;
+            color: #333;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            margin: 20px;
+        }
+
+        /* Animations */
+        @keyframes flipCard {
+            0% { transform: rotateY(0); }
+            50% { transform: rotateY(90deg) scale(1.1); }
+            100% { transform: rotateY(180deg); }
+        }
+
+        @keyframes matchPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes wrongShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+
+        @keyframes victoryAppear {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .memory-grid {
+                gap: 10px;
+            }
+            
+            .grid-easy {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .grid-medium {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .grid-hard {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .game-info {
+                justify-content: center;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+            
+            .difficulty-selector {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .difficulty-btn {
+                width: 100%;
+                max-width: 200px;
+            }
+            
+            .victory-message {
+                padding: 25px;
+            }
+            
+            .victory-message h2 {
+                font-size: 2em;
+            }
+            
+            .achievements {
+                right: 10px;
+                top: 10px;
+            }
+            
+            .achievement {
+                max-width: 200px;
+                font-size: 0.9em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .memory-grid {
+                gap: 8px;
+            }
+            
+            .card-content {
+                font-size: 0.8em;
+                padding: 8px;
+            }
+            
+            .card-back {
+                font-size: 1.5em;
+            }
+            
+            .memory-card {
+                min-height: 60px;
+            }
+            
+            .grid-easy {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .grid-medium {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .grid-hard {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Touch improvements */
+        @media (hover: none) {
+            .memory-card:hover {
+                transform: none;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+            
+            .memory-card:active {
+                transform: scale(0.95);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎮 Französisch Memory</h1>
+        <p>Erweiterte Version mit verschiedenen Schwierigkeitsstufen</p>
+    </div>
+
+    <div class="nav-bar">
+        <a href="index.html" class="nav-btn">🏠 Hauptseite</a>
+        <a href="cards.html" class="nav-btn">📚 Lernkarten</a>
+        <a href="quiz.html" class="nav-btn">🧠 Quiz</a>
+        <a href="regeln.html" class="nav-btn">📖 Regeln</a>
+    </div>
+
+    <div class="difficulty-selector">
+        <button class="difficulty-btn active" onclick="setDifficulty('easy')">
+            🟢 Einfach (8 Paare)
+        </button>
+        <button class="difficulty-btn" onclick="setDifficulty('medium')">
+            🟡 Mittel (12 Paare)
+        </button>
+        <button class="difficulty-btn" onclick="setDifficulty('hard')">
+            🔴 Schwer (15 Paare)
+        </button>
+    </div>
+
+    <div class="game-info">
+        <div class="score-board">
+            <span class="score-number" id="moves">0</span>
+            <span class="score-label">Züge</span>
+        </div>
+        <div class="score-board">
+            <span class="score-number" id="pairs">0</span>
+            <span class="score-label">Paare</span>
+        </div>
+        <div class="score-board">
+            <span class="score-number" id="timer">00:00</span>
+            <span class="score-label">Zeit</span>
+        </div>
+        <div class="score-board">
+            <span class="score-number" id="accuracy">100%</span>
+            <span class="score-label">Genauigkeit</span>
+        </div>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+    </div>
+
+    <div class="memory-grid grid-easy" id="memoryGrid">
+        <!-- Cards will be generated by JavaScript -->
+    </div>
+
+    <div class="controls">
+        <button class="btn btn-primary" onclick="startNewGame()">🎮 Neues Spiel</button>
+        <button class="btn btn-secondary" onclick="showHint()">💡 Tipp</button>
+        <button class="btn btn-info" onclick="pauseGame()">⏸️ Pause</button>
+        <button class="btn btn-secondary" onclick="showStats()">📊 Statistiken</button>
+    </div>
+
+    <div class="victory-message" id="victoryMessage">
+        <h2>🎉 Glückwunsch!</h2>
+        <p>Du hast alle Paare gefunden!</p>
+        
+        <div class="victory-stats">
+            <p><strong>Züge:</strong> <span id="finalMoves"></span></p>
+            <p><strong>Zeit:</strong> <span id="finalTime"></span></p>
+            <p><strong>Genauigkeit:</strong> <span id="finalAccuracy"></span></p>
+            <p><strong>Bewertung:</strong> <span id="finalGrade"></span></p>
+        </div>
+
+        <div class="victory-actions">
+            <button class="btn btn-primary" onclick="startNewGame()">🔄 Nochmal spielen</button>
+            <button class="btn btn-secondary" onclick="increaseDifficulty()">⬆️ Schwerer</button>
+            <a href="cards.html" class="btn btn-info">📚 Lernkarten</a>
+        </div>
+    </div>
+
+    <div class="achievements" id="achievements">
+        <!-- Achievement notifications will appear here -->
+    </div>
+
+    <div class="hint-overlay" id="hintOverlay">
+        <div class="hint-content">
+            <h3>💡 Tipp verwendet!</h3>
+            <p>Ein Paar wurde kurz angezeigt. Hast du es gesehen?</p>
+            <button class="btn btn-primary" onclick="closeHint()">Verstanden</button>
+        </div>
+    </div>
+
+    <script>
+        // Verb pairs for different difficulty levels
+        const allVerbPairs = [
+            // Easy level (8 pairs)
+            { french: "avoir", german: "haben", level: "easy" },
+            { french: "être", german: "sein", level: "easy" },
+            { french: "aller", german: "gehen", level: "easy" },
+            { french: "faire", german: "machen", level: "easy" },
+            { french: "voir", german: "sehen", level: "easy" },
+            { french: "dire", german: "sagen", level: "easy" },
+            { french: "venir", german: "kommen", level: "easy" },
+            { french: "prendre", german: "nehmen", level: "easy" },
+            
+            // Medium level (additional 4 pairs)
+            { french: "pouvoir", german: "können", level: "medium" },
+            { french: "vouloir", german: "wollen", level: "medium" },
+            { french: "savoir", german: "wissen", level: "medium" },
+            { french: "devoir", german: "müssen", level: "medium" },
+            
+            // Hard level (additional 3 pairs)
+            { french: "mettre", german: "setzen", level: "hard" },
+            { french: "partir", german: "weggehen", level: "hard" },
+            { french: "sortir", german: "ausgehen", level: "hard" }
+        ];
+
+        // Game state
+        let currentDifficulty = 'easy';
+        let cards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let moves = 0;
+        let gameStartTime = null;
+        let timerInterval = null;
+        let gameActive = false;
+        let isPaused = false;
+        let totalPairs = 8;
+        let hintsUsed = 0;
+        let gameStats = {
+            gamesPlayed: 0,
+            totalTime: 0,
+            bestTime: null,
+            averageMoves: 0
+        };
+
+        // Load stats from localStorage
+        function loadStats() {
+            const saved = localStorage.getItem('memoryGameStats');
+            if (saved) {
+                gameStats = { ...gameStats, ...JSON.parse(saved) };
+            }
+        }
+
+        // Save stats to localStorage
+        function saveStats() {
+            localStorage.setItem('memoryGameStats', JSON.stringify(gameStats));
+        }
+
+        function setDifficulty(level) {
+            currentDifficulty = level;
+            
+            // Update active button
+            document.querySelectorAll('.difficulty-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update grid class
+            const grid = document.getElementById('memoryGrid');
+            grid.className = `memory-grid grid-${level}`;
+            
+            // Set total pairs
+            totalPairs = level === 'easy' ? 8 : level === 'medium' ? 12 : 15;
+            
+            // Start new game
+            startNewGame();
+        }
+
+        function createCards() {
+            cards = [];
+            
+            // Get verb pairs for current difficulty
+            let selectedPairs = [];
+            if (currentDifficulty === 'easy') {
+                selectedPairs = allVerbPairs.filter(pair => pair.level === 'easy');
+            } else if (currentDifficulty === 'medium') {
+                selectedPairs = allVerbPairs.filter(pair => pair.level === 'easy' || pair.level === 'medium');
+            } else {
+                selectedPairs = [...allVerbPairs];
+            }
+            
+            // Create pairs of cards
+            selectedPairs.forEach((pair, index) => {
+                cards.push({
+                    id: `french_${index}`,
+                    content: pair.french,
+                    type: 'french',
+                    pairId: index,
+                    matched: false,
+                    flipped: false
+                });
+                
+                cards.push({
+                    id: `german_${index}`,
+                    content: pair.german,
+                    type: 'german',
+                    pairId: index,
+                    matched: false,
+                    flipped: false
+                });
+            });
+            
+            // Shuffle cards
+            for (let i = cards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [cards[i], cards[j]] = [cards[j], cards[i]];
+            }
+        }
+
+        function renderGrid() {
+            const grid = document.getElementById('memoryGrid');
+            grid.innerHTML = '';
+            
+            cards.forEach((card, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'memory-card';
+                cardElement.dataset.index = index;
+                
+                if (card.flipped || card.matched) {
+                    cardElement.classList.add('flipped');
+                    if (card.matched) {
+                        cardElement.classList.add('matched');
+                    }
+                    cardElement.innerHTML = `
+                        <div class="card-content">${card.content}</div>
+                        <div class="card-type">${card.type === 'french' ? '🇫🇷' : '🇩🇪'}</div>
+                    `;
+                } else {
+                    cardElement.classList.add('card-back');
+                    cardElement.innerHTML = `<div class="card-content">?</div>`;
+                }
+                
+                cardElement.addEventListener('click', () => flipCard(index));
+                grid.appendChild(cardElement);
+            });
+        }
+
+        function flipCard(index) {
+            if (!gameActive || isPaused) return;
+            
+            const card = cards[index];
+            
+            // Can't flip if already flipped, matched, or if two cards are already flipped
+            if (card.flipped || card.matched || flippedCards.length >= 2) {
+                return;
+            }
+            
+            // Start timer on first move
+            if (moves === 0) {
+                startTimer();
+            }
+            
+            card.flipped = true;
+            flippedCards.push(index);
+            
+            renderGrid();
+            
+            if (flippedCards.length === 2) {
+                moves++;
+                updateUI();
+                setTimeout(checkMatch, 1000);
+            }
+        }
+
+        function checkMatch() {
+            const [index1, index2] = flippedCards;
+            const card1 = cards[index1];
+            const card2 = cards[index2];
+            
+            if (card1.pairId === card2.pairId) {
+                // Match found!
+                card1.matched = true;
+                card2.matched = true;
+                matchedPairs++;
+                
+                // Show achievement for first match
+                if (matchedPairs === 1) {
+                    showAchievement('🎯 Erstes Paar gefunden!');
+                }
+                
+                updateUI();
+                
+                // Check if game is won
+                if (matchedPairs === totalPairs) {
+                    setTimeout(gameWon, 500);
+                }
+            } else {
+                // No match, flip cards back
+                card1.flipped = false;
+                card2.flipped = false;
+                
+                // Show wrong animation
+                const cardElements = document.querySelectorAll(`[data-index="${index1}"], [data-index="${index2}"]`);
+                cardElements.forEach(el => el.classList.add('wrong'));
+                
+                setTimeout(() => {
+                    cardElements.forEach(el => el.classList.remove('wrong'));
+                    renderGrid();
+                }, 600);
+            }
+            
+            flippedCards = [];
+        }
+
+        function startTimer() {
+            gameStartTime = Date.now();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            if (!gameStartTime || isPaused) return;
+            
+            const elapsed = Math.floor((Date.now() - gameStartTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            
+            document.getElementById('timer').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function updateUI() {
+            document.getElementById('moves').textContent = moves;
+            document.getElementById('pairs').textContent = `${matchedPairs}/${totalPairs}`;
+            
+            // Update progress
+            const progress = (matchedPairs / totalPairs) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+            
+            // Calculate accuracy
+            const accuracy = moves > 0 ? Math.round((matchedPairs / moves) * 100) : 100;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+        }
+
+        function gameWon() {
+            gameActive = false;
+            clearInterval(timerInterval);
+            
+            const totalTime = Math.floor((Date.now() - gameStartTime) / 1000);
+            const accuracy = Math.round((matchedPairs / moves) * 100);
+            
+            // Update stats
+            gameStats.gamesPlayed++;
+            gameStats.totalTime += totalTime;
+            gameStats.averageMoves = Math.round(
+                ((gameStats.averageMoves * (gameStats.gamesPlayed - 1)) + moves) / gameStats.gamesPlayed
+            );
+            
+            if (!gameStats.bestTime || totalTime < gameStats.bestTime) {
+                gameStats.bestTime = totalTime;
+                showAchievement('🏆 Neuer Rekord!');
+            }
+            
+            saveStats();
+            
+            // Determine grade
+            let grade = '';
+            if (accuracy >= 90 && moves <= totalPairs + 2) {
+                grade = 'Perfekt! 🏆';
+            } else if (accuracy >= 80) {
+                grade = 'Ausgezeichnet! 🌟';
+            } else if (accuracy >= 70) {
+                grade = 'Sehr gut! 👍';
+            } else if (accuracy >= 60) {
+                grade = 'Gut! 👌';
+            } else {
+                grade = 'Noch üben! 💪';
+            }
+            
+            // Show victory message
+            const minutes = Math.floor(totalTime / 60);
+            const seconds = totalTime % 60;
+            
+            document.getElementById('finalMoves').textContent = moves;
+            document.getElementById('finalTime').textContent = 
+                `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('finalAccuracy').textContent = accuracy + '%';
+            document.getElementById('finalGrade').textContent = grade;
+            document.getElementById('victoryMessage').classList.add('show');
+            
+            // Check for achievements
+            checkAchievements();
+        }
+
+        function checkAchievements() {
+            const accuracy = Math.round((matchedPairs / moves) * 100);
+            
+            if (accuracy === 100 && !localStorage.getItem('achievement_perfect')) {
+                showAchievement('🎯 Perfekte Runde!');
+                localStorage.setItem('achievement_perfect', 'true');
+            }
+            
+            if (gameStats.gamesPlayed === 5 && !localStorage.getItem('achievement_5games')) {
+                showAchievement('🎮 5 Spiele gespielt!');
+                localStorage.setItem('achievement_5games', 'true');
+            }
+            
+            if (currentDifficulty === 'hard' && !localStorage.getItem('achievement_hard')) {
+                showAchievement('🔥 Schwer gemeistert!');
+                localStorage.setItem('achievement_hard', 'true');
+            }
+        }
+
+        function showAchievement(text) {
+            const achievement = document.createElement('div');
+            achievement.className = 'achievement';
+            achievement.textContent = text;
+            
+            document.getElementById('achievements').appendChild(achievement);
+            
+            setTimeout(() => {
+                achievement.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                achievement.classList.remove('show');
+                setTimeout(() => {
+                    achievement.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        function startNewGame() {
+            // Reset game state
+            matchedPairs = 0;
+            moves = 0;
+            flippedCards = [];
+            gameStartTime = null;
+            gameActive = true;
+            isPaused = false;
+            hintsUsed = 0;
+            
+            // Clear timer
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+            
+            // Reset UI
+            document.getElementById('moves').textContent = '0';
+            document.getElementById('pairs').textContent = `0/${totalPairs}`;
+            document.getElementById('timer').textContent = '00:00';
+            document.getElementById('accuracy').textContent = '100%';
+            document.getElementById('progress-fill').style.width = '0%';
+            document.getElementById('victoryMessage').classList.remove('show');
+            
+            // Create and render new game
+            createCards();
+            renderGrid();
+        }
+
+        function showHint() {
+            if (!gameActive || hintsUsed >= 3) {
+                showAchievement('❌ Keine Tipps mehr!');
+                return;
+            }
+            
+            // Find first unmatched pair
+            for (let i = 0; i < totalPairs; i++) {
+                const frenchCard = cards.find(card => card.pairId === i && card.type === 'french' && !card.matched);
+                const germanCard = cards.find(card => card.pairId === i && card.type === 'german' && !card.matched);
+                
+                if (frenchCard && germanCard) {
+                    // Temporarily show the cards
+                    frenchCard.flipped = true;
+                    germanCard.flipped = true;
+                    renderGrid();
+                    
+                    hintsUsed++;
+                    document.getElementById('hintOverlay').style.display = 'flex';
+                    
+                    setTimeout(() => {
+                        frenchCard.flipped = false;
+                        germanCard.flipped = false;
+                        renderGrid();
+                    }, 2000);
+                    
+                    break;
+                }
+            }
+        }
+
+        function closeHint() {
+            document.getElementById('hintOverlay').style.display = 'none';
+        }
+
+        function pauseGame() {
+            if (!gameActive) return;
+            
+            isPaused = !isPaused;
+            const btn = event.target;
+            
+            if (isPaused) {
+                btn.textContent = '▶️ Weiter';
+                showAchievement('⏸️ Spiel pausiert');
+            } else {
+                btn.textContent = '⏸️ Pause';
+                showAchievement('▶️ Spiel fortgesetzt');
+            }
+        }
+
+        function showStats() {
+            const bestTimeText = gameStats.bestTime ? 
+                `${Math.floor(gameStats.bestTime / 60)}:${(gameStats.bestTime % 60).toString().padStart(2, '0')}` : 
+                'Noch kein Spiel';
+            
+            alert(`📊 Deine Statistiken:
+            
+🎮 Gespielte Spiele: ${gameStats.gamesPlayed}
+⏱️ Beste Zeit: ${bestTimeText}
+🎯 Durchschnittliche Züge: ${gameStats.averageMoves}
+⏰ Gesamtspielzeit: ${Math.floor(gameStats.totalTime / 60)} Minuten`);
+        }
+
+        function increaseDifficulty() {
+            document.getElementById('victoryMessage').classList.remove('show');
+            
+            if (currentDifficulty === 'easy') {
+                setDifficulty('medium');
+                showAchievement('⬆️ Mittlere Stufe!');
+            } else if (currentDifficulty === 'medium') {
+                setDifficulty('hard');
+                showAchievement('🔥 Schwere Stufe!');
+            } else {
+                showAchievement('🏆 Bereits maximale Stufe!');
+                startNewGame();
+            }
+        }
+
+        // Initialize game
+        loadStats();
+        startNewGame();
+    </script>
+</body>
+</html>
+

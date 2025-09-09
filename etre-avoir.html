@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⭐ être & avoir - Französisch Lernplattform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .nav-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .content-section {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #4CAF50;
+            text-align: center;
+        }
+
+        .verb-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .verb-box {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .verb-box.etre {
+            border-color: rgba(76, 175, 80, 0.5);
+        }
+
+        .verb-box.avoir {
+            border-color: rgba(33, 150, 243, 0.5);
+        }
+
+        .verb-title {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .verb-title.etre {
+            color: #4CAF50;
+        }
+
+        .verb-title.avoir {
+            color: #2196F3;
+        }
+
+        .verb-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .verb-table th {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .verb-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9em;
+        }
+
+        .verb-table tr:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .pronoun {
+            font-weight: bold;
+            color: #ff9800;
+        }
+
+        .conjugation {
+            font-weight: bold;
+        }
+
+        .etre-conjugation {
+            color: #4CAF50;
+        }
+
+        .avoir-conjugation {
+            color: #2196F3;
+        }
+
+        .info-box {
+            background: rgba(76, 175, 80, 0.2);
+            border: 2px solid rgba(76, 175, 80, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .info-box h3 {
+            color: #4CAF50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .info-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .info-box li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .info-box li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .usage-box {
+            background: rgba(255, 152, 0, 0.2);
+            border: 2px solid rgba(255, 152, 0, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .usage-box h3 {
+            color: #ff9800;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .usage-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .usage-example {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .usage-example h4 {
+            color: #ff9800;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+
+        .example-sentence {
+            font-style: italic;
+            margin-bottom: 5px;
+        }
+
+        .example-translation {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .comparison-table th {
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .comparison-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .tips-box {
+            background: rgba(156, 39, 176, 0.2);
+            border: 2px solid rgba(156, 39, 176, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .tips-box h3 {
+            color: #9c27b0;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .tip-item {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .tip-item h4 {
+            color: #9c27b0;
+            margin-bottom: 8px;
+        }
+
+        .expressions-box {
+            background: rgba(233, 30, 99, 0.2);
+            border: 2px solid rgba(233, 30, 99, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .expressions-box h3 {
+            color: #e91e63;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .expressions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .expression-item {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .expression-french {
+            font-weight: bold;
+            color: #e91e63;
+            margin-bottom: 5px;
+        }
+
+        .expression-german {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .content-section {
+                padding: 20px;
+            }
+            
+            .verb-comparison {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .verb-table {
+                font-size: 0.8em;
+            }
+            
+            .verb-table th,
+            .verb-table td {
+                padding: 8px;
+            }
+            
+            .usage-examples {
+                grid-template-columns: 1fr;
+            }
+            
+            .expressions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-bar {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                max-width: 250px;
+                text-align: center;
+            }
+            
+            .comparison-table {
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⭐ être & avoir</h1>
+            <p>Die wichtigsten Verben im Französischen - Hilfsverben und mehr</p>
+        </div>
+
+        <div class="nav-bar">
+            <a href="index.html" class="nav-btn">🏠 Hauptseite</a>
+            <a href="cards.html" class="nav-btn">📚 Lernkarten</a>
+            <a href="er.html" class="nav-btn">📝 -er Verben</a>
+            <a href="ir.html" class="nav-btn">📝 -ir Verben</a>
+            <a href="zeiten.html" class="nav-btn">⏰ Zeiten</a>
+        </div>
+
+        <!-- Grundlagen -->
+        <div class="content-section">
+            <h2 class="section-title">🎯 Warum sind être & avoir so wichtig?</h2>
+            
+            <div class="info-box">
+                <h3>💡 Zentrale Bedeutung</h3>
+                <ul>
+                    <li><strong>Hilfsverben</strong> für zusammengesetzte Zeiten (Passé composé, Plus-que-parfait, etc.)</li>
+                    <li><strong>Häufigste Verben</strong> in der französischen Sprache</li>
+                    <li><strong>Unregelmäßige Konjugation</strong> - müssen auswendig gelernt werden</li>
+                    <li><strong>Verschiedene Bedeutungen</strong> je nach Kontext</li>
+                    <li><strong>Basis für viele Ausdrücke</strong> und Redewendungen</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Présent Vergleich -->
+        <div class="content-section">
+            <h2 class="section-title">🕐 Présent (Gegenwart) - Vergleich</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Person</th>
+                        <th style="background: linear-gradient(145deg, #4CAF50, #45a049);">être (sein)</th>
+                        <th style="background: linear-gradient(145deg, #2196F3, #1976D2);">avoir (haben)</th>
+                        <th>Deutsche Übersetzung</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="pronoun">je</td>
+                        <td class="etre-conjugation">suis</td>
+                        <td class="avoir-conjugation">ai</td>
+                        <td>ich bin / ich habe</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">tu</td>
+                        <td class="etre-conjugation">es</td>
+                        <td class="avoir-conjugation">as</td>
+                        <td>du bist / du hast</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">il/elle</td>
+                        <td class="etre-conjugation">est</td>
+                        <td class="avoir-conjugation">a</td>
+                        <td>er/sie ist / er/sie hat</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">nous</td>
+                        <td class="etre-conjugation">sommes</td>
+                        <td class="avoir-conjugation">avons</td>
+                        <td>wir sind / wir haben</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">vous</td>
+                        <td class="etre-conjugation">êtes</td>
+                        <td class="avoir-conjugation">avez</td>
+                        <td>ihr seid / ihr habt</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">ils/elles</td>
+                        <td class="etre-conjugation">sont</td>
+                        <td class="avoir-conjugation">ont</td>
+                        <td>sie sind / sie haben</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Imparfait -->
+        <div class="content-section">
+            <h2 class="section-title">🕑 Imparfait (Imperfekt)</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Person</th>
+                        <th style="background: linear-gradient(145deg, #4CAF50, #45a049);">être</th>
+                        <th style="background: linear-gradient(145deg, #2196F3, #1976D2);">avoir</th>
+                        <th>Deutsche Übersetzung</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="pronoun">je</td>
+                        <td class="etre-conjugation">étais</td>
+                        <td class="avoir-conjugation">avais</td>
+                        <td>ich war / ich hatte</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">tu</td>
+                        <td class="etre-conjugation">étais</td>
+                        <td class="avoir-conjugation">avais</td>
+                        <td>du warst / du hattest</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">il/elle</td>
+                        <td class="etre-conjugation">était</td>
+                        <td class="avoir-conjugation">avait</td>
+                        <td>er/sie war / er/sie hatte</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">nous</td>
+                        <td class="etre-conjugation">étions</td>
+                        <td class="avoir-conjugation">avions</td>
+                        <td>wir waren / wir hatten</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">vous</td>
+                        <td class="etre-conjugation">étiez</td>
+                        <td class="avoir-conjugation">aviez</td>
+                        <td>ihr wart / ihr hattet</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">ils/elles</td>
+                        <td class="etre-conjugation">étaient</td>
+                        <td class="avoir-conjugation">avaient</td>
+                        <td>sie waren / sie hatten</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Futur proche -->
+        <div class="content-section">
+            <h2 class="section-title">🕒 Futur proche (Nahe Zukunft)</h2>
+            
+            <div class="info-box">
+                <h3>📋 Bildung</h3>
+                <ul>
+                    <li><strong>aller</strong> (konjugiert) + <strong>être/avoir</strong> (Infinitiv)</li>
+                    <li>Drückt nahe Zukunft oder feste Absicht aus</li>
+                </ul>
+            </div>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Person</th>
+                        <th style="background: linear-gradient(145deg, #4CAF50, #45a049);">aller + être</th>
+                        <th style="background: linear-gradient(145deg, #2196F3, #1976D2);">aller + avoir</th>
+                        <th>Deutsche Übersetzung</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="pronoun">je</td>
+                        <td class="etre-conjugation">vais être</td>
+                        <td class="avoir-conjugation">vais avoir</td>
+                        <td>ich werde sein / haben</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">tu</td>
+                        <td class="etre-conjugation">vas être</td>
+                        <td class="avoir-conjugation">vas avoir</td>
+                        <td>du wirst sein / haben</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">il/elle</td>
+                        <td class="etre-conjugation">va être</td>
+                        <td class="avoir-conjugation">va avoir</td>
+                        <td>er/sie wird sein / haben</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">nous</td>
+                        <td class="etre-conjugation">allons être</td>
+                        <td class="avoir-conjugation">allons avoir</td>
+                        <td>wir werden sein / haben</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">vous</td>
+                        <td class="etre-conjugation">allez être</td>
+                        <td class="avoir-conjugation">allez avoir</td>
+                        <td>ihr werdet sein / haben</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">ils/elles</td>
+                        <td class="etre-conjugation">vont être</td>
+                        <td class="avoir-conjugation">vont avoir</td>
+                        <td>sie werden sein / haben</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Passé composé -->
+        <div class="content-section">
+            <h2 class="section-title">🕓 Passé composé (Perfekt)</h2>
+            
+            <div class="info-box">
+                <h3>📋 Besonderheit</h3>
+                <ul>
+                    <li><strong>être</strong> bildet Passé composé mit <strong>avoir</strong> + <strong>été</strong></li>
+                    <li><strong>avoir</strong> bildet Passé composé mit <strong>avoir</strong> + <strong>eu</strong></li>
+                    <li>Beide verwenden <strong>avoir</strong> als Hilfsverb!</li>
+                </ul>
+            </div>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Person</th>
+                        <th style="background: linear-gradient(145deg, #4CAF50, #45a049);">avoir + été</th>
+                        <th style="background: linear-gradient(145deg, #2196F3, #1976D2);">avoir + eu</th>
+                        <th>Deutsche Übersetzung</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="pronoun">je</td>
+                        <td class="etre-conjugation">ai été</td>
+                        <td class="avoir-conjugation">ai eu</td>
+                        <td>ich bin gewesen / gehabt</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">tu</td>
+                        <td class="etre-conjugation">as été</td>
+                        <td class="avoir-conjugation">as eu</td>
+                        <td>du bist gewesen / gehabt</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">il/elle</td>
+                        <td class="etre-conjugation">a été</td>
+                        <td class="avoir-conjugation">a eu</td>
+                        <td>er/sie ist gewesen / gehabt</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">nous</td>
+                        <td class="etre-conjugation">avons été</td>
+                        <td class="avoir-conjugation">avons eu</td>
+                        <td>wir sind gewesen / gehabt</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">vous</td>
+                        <td class="etre-conjugation">avez été</td>
+                        <td class="avoir-conjugation">avez eu</td>
+                        <td>ihr seid gewesen / gehabt</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">ils/elles</td>
+                        <td class="etre-conjugation">ont été</td>
+                        <td class="avoir-conjugation">ont eu</td>
+                        <td>sie sind gewesen / gehabt</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Impératif -->
+        <div class="content-section">
+            <h2 class="section-title">🕔 Impératif (Imperativ)</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Form</th>
+                        <th style="background: linear-gradient(145deg, #4CAF50, #45a049);">être</th>
+                        <th style="background: linear-gradient(145deg, #2196F3, #1976D2);">avoir</th>
+                        <th>Deutsche Übersetzung</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="pronoun">tu → </td>
+                        <td class="etre-conjugation">sois</td>
+                        <td class="avoir-conjugation">aie</td>
+                        <td>sei! / hab!</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">nous → </td>
+                        <td class="etre-conjugation">soyons</td>
+                        <td class="avoir-conjugation">ayons</td>
+                        <td>seien wir! / haben wir!</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">vous → </td>
+                        <td class="etre-conjugation">soyez</td>
+                        <td class="avoir-conjugation">ayez</td>
+                        <td>seid! / habt!</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Verwendung als Hilfsverben -->
+        <div class="content-section">
+            <h2 class="section-title">🔧 Verwendung als Hilfsverben</h2>
+            
+            <div class="usage-box">
+                <h3>📋 Wann être, wann avoir?</h3>
+                
+                <div class="usage-examples">
+                    <div class="usage-example">
+                        <h4>avoir + Partizip</h4>
+                        <div class="example-sentence">J'ai mangé une pomme.</div>
+                        <div class="example-translation">Ich habe einen Apfel gegessen.</div>
+                        <p style="margin-top: 8px; font-size: 0.9em;">
+                            <strong>Regel:</strong> Die meisten Verben (ca. 90%)
+                        </p>
+                    </div>
+                    
+                    <div class="usage-example">
+                        <h4>être + Partizip</h4>
+                        <div class="example-sentence">Je suis allé(e) au cinéma.</div>
+                        <div class="example-translation">Ich bin ins Kino gegangen.</div>
+                        <p style="margin-top: 8px; font-size: 0.9em;">
+                            <strong>Regel:</strong> Bewegungsverben + reflexive Verben
+                        </p>
+                    </div>
+                    
+                    <div class="usage-example">
+                        <h4>Bewegungsverben mit être</h4>
+                        <div class="example-sentence">aller, venir, partir, sortir, entrer, rentrer, arriver, rester, tomber, naître, mourir, devenir, retourner, monter, descendre</div>
+                        <p style="margin-top: 8px; font-size: 0.9em;">
+                            <strong>Merksatz:</strong> "DR MRS VANDERTRAMP"
+                        </p>
+                    </div>
+                    
+                    <div class="usage-example">
+                        <h4>Reflexive Verben mit être</h4>
+                        <div class="example-sentence">Je me suis levé(e).</div>
+                        <div class="example-translation">Ich bin aufgestanden.</div>
+                        <p style="margin-top: 8px; font-size: 0.9em;">
+                            <strong>Regel:</strong> Alle Verben mit se/s'
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Verschiedene Bedeutungen -->
+        <div class="content-section">
+            <h2 class="section-title">🎭 Verschiedene Bedeutungen</h2>
+            
+            <div class="verb-comparison">
+                <div class="verb-box etre">
+                    <h3 class="verb-title etre">être (sein)</h3>
+                    
+                    <div class="usage-examples">
+                        <div class="usage-example">
+                            <h4>Identität/Beruf</h4>
+                            <div class="example-sentence">Je suis étudiant.</div>
+                            <div class="example-translation">Ich bin Student.</div>
+                        </div>
+                        
+                        <div class="usage-example">
+                            <h4>Eigenschaften</h4>
+                            <div class="example-sentence">Elle est intelligente.</div>
+                            <div class="example-translation">Sie ist intelligent.</div>
+                        </div>
+                        
+                        <div class="usage-example">
+                            <h4>Ort/Lage</h4>
+                            <div class="example-sentence">Nous sommes à Paris.</div>
+                            <div class="example-translation">Wir sind in Paris.</div>
+                        </div>
+                        
+                        <div class="usage-example">
+                            <h4>Zeit/Datum</h4>
+                            <div class="example-sentence">Il est 15 heures.</div>
+                            <div class="example-translation">Es ist 15 Uhr.</div>
+                        </div>
+                        
+                        <div class="usage-example">
+                            <h4>Zustand</h4>
+                            <div class="example-sentence">Je suis fatigué(e).</div>
+                            <div class="example-translation">Ich bin müde.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="verb-box avoir">
+                    <h3 class="verb-title avoir">avoir (haben)</h3>
+                    
+                    <div class="usage-examples">
+                        <div class="usage-example">
+                            <h4>Besitz</h4>
+                            <div class="example-sentence">J'ai une voiture.</div>
+                            <div class="example-translation">Ich habe ein Auto.</div>
+                        </div>
+                        
+                        <div class="usage-example">
+                            <h4>Alter</h4>
+                            <div class="example-sentence">J'ai 20 ans.</div>
+                            <div class="example-translation">Ich bin 20 Jahre alt.</div>
+                        </div>
+                        
+                        <div class="usage-example">
+                            <h4>Körperliche Zustände</h4>
+                            <div class="example-sentence">J'ai faim/soif/froid.</div>
+                            <div class="example-translation">Ich habe Hunger/Durst/bin kalt.</div>
+                        </div>
+                        
+                        <div class="usage-example">
+                            <h4>Gefühle</h4>
+                            <div class="example-sentence">J'ai peur.</div>
+                            <div class="example-translation">Ich habe Angst.</div>
+                        </div>
+                        
+                        <div class="usage-example">
+                            <h4>Aussehen</h4>
+                            <div class="example-sentence">Elle a les yeux bleus.</div>
+                            <div class="example-translation">Sie hat blaue Augen.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wichtige Ausdrücke -->
+        <div class="content-section">
+            <h2 class="section-title">💬 Wichtige Ausdrücke und Redewendungen</h2>
+            
+            <div class="expressions-box">
+                <h3>🗣️ Häufige Ausdrücke</h3>
+                
+                <div class="expressions-grid">
+                    <div class="expression-item">
+                        <div class="expression-french">avoir besoin de</div>
+                        <div class="expression-german">brauchen, benötigen</div>
+                    </div>
+                    
+                    <div class="expression-item">
+                        <div class="expression-french">avoir envie de</div>
+                        <div class="expression-german">Lust haben auf</div>
+                    </div>
+                    
+                    <div class="expression-item">
+                        <div class="expression-french">avoir l'air</div>
+                        <div class="expression-german">aussehen wie</div>
+                    </div>
+                    
+                    <div class="expression-item">
+                        <div class="expression-french">avoir raison/tort</div>
+                        <div class="expression-german">recht/unrecht haben</div>
+                    </div>
+                    
+                    <div class="expression-item">
+                        <div class="expression-french">avoir lieu</div>
+                        <div class="expression-german">stattfinden</div>
+                    </div>
+                    
+                    <div class="expression-item">
+                        <div class="expression-french">être en train de</div>
+                        <div class="expression-german">gerade dabei sein zu</div>
+                    </div>
+                    
+                    <div class="expression-item">
+                        <div class="expression-french">être d'accord</div>
+                        <div class="expression-german">einverstanden sein</div>
+                    </div>
+                    
+                    <div class="expression-item">
+                        <div class="expression-french">être en retard</div>
+                        <div class="expression-german">zu spät sein</div>
+                    </div>
+                    
+                    <div class="expression-item">
+                        <div class="expression-french">être à l'heure</div>
+                        <div class="expression-german">pünktlich sein</div>
+                    </div>
+                    
+                    <div class="expression-item">
+                        <div class="expression-french">il y a</div>
+                        <div class="expression-german">es gibt</div>
+                    </div>
+                    
+                    <div class="expression-item">
+                        <div class="expression-french">qu'est-ce qu'il y a?</div>
+                        <div class="expression-german">was ist los?</div>
+                    </div>
+                    
+                    <div class="expression-item">
+                        <div class="expression-french">c'est/ce sont</div>
+                        <div class="expression-german">das ist/das sind</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lerntipps -->
+        <div class="content-section">
+            <h2 class="section-title">💡 Lerntipps für être & avoir</h2>
+            
+            <div class="tips-box">
+                <h3>🎯 Effektive Lernstrategien</h3>
+                
+                <div class="tip-item">
+                    <h4>1. Konjugationen auswendig lernen</h4>
+                    <p>Diese beiden Verben sind so wichtig, dass sie perfekt sitzen müssen!<br>
+                    <strong>Tipp:</strong> Täglich 5 Minuten Konjugation üben.</p>
+                </div>
+                
+                <div class="tip-item">
+                    <h4>2. Hilfsverb-Regel merken</h4>
+                    <p><strong>avoir:</strong> Die meisten Verben (90%)<br>
+                    <strong>être:</strong> Bewegungsverben + reflexive Verben<br>
+                    <strong>Merksatz:</strong> "DR MRS VANDERTRAMP" für être-Verben</p>
+                </div>
+                
+                <div class="tip-item">
+                    <h4>3. Unterschiede zu Deutsch beachten</h4>
+                    <p><strong>Alter:</strong> "J'ai 20 ans" (nicht: je suis 20 ans)<br>
+                    <strong>Hunger/Durst:</strong> "J'ai faim/soif" (nicht: je suis faim)<br>
+                    <strong>Kalt/Warm:</strong> "J'ai froid/chaud" (nicht: je suis froid)</p>
+                </div>
+                
+                <div class="tip-item">
+                    <h4>4. Ausdrücke als Ganzes lernen</h4>
+                    <p>Lerne Ausdrücke wie "avoir besoin de", "être en train de" als feste Wendungen.<br>
+                    Nicht Wort für Wort übersetzen!</p>
+                </div>
+                
+                <div class="tip-item">
+                    <h4>5. Partizip-Angleichung bei être</h4>
+                    <p>Bei être-Verben richtet sich das Partizip nach dem Subjekt:<br>
+                    "Elle est allée" (weiblich) vs. "Il est allé" (männlich)</p>
+                </div>
+                
+                <div class="tip-item">
+                    <h4>6. Impératif-Formen üben</h4>
+                    <p>Besonders die unregelmäßigen Formen:<br>
+                    <strong>être:</strong> sois, soyons, soyez<br>
+                    <strong>avoir:</strong> aie, ayons, ayez</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

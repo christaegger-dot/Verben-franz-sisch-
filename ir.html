@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📝 -ir Verben - Französisch Lernplattform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .nav-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .content-section {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #4CAF50;
+            text-align: center;
+        }
+
+        .info-box {
+            background: rgba(76, 175, 80, 0.2);
+            border: 2px solid rgba(76, 175, 80, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .info-box h3 {
+            color: #4CAF50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .info-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .info-box li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .info-box li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .verb-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .verb-table th {
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .verb-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .verb-table tr:nth-child(even) {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .verb-table tr:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .pronoun {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .ending {
+            color: #ff9800;
+            font-weight: bold;
+        }
+
+        .irregular {
+            color: #f44336;
+            font-weight: bold;
+        }
+
+        .warning-box {
+            background: rgba(255, 152, 0, 0.2);
+            border: 2px solid rgba(255, 152, 0, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .warning-box h3 {
+            color: #ff9800;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .comparison-box {
+            background: rgba(33, 150, 243, 0.2);
+            border: 2px solid rgba(33, 150, 243, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .comparison-box h3 {
+            color: #2196F3;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .verb-groups {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .verb-group {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .verb-group h4 {
+            color: #2196F3;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .verb-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .verb-list li {
+            background: rgba(255,255,255,0.1);
+            margin-bottom: 8px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.9em;
+        }
+
+        .tips-box {
+            background: rgba(156, 39, 176, 0.2);
+            border: 2px solid rgba(156, 39, 176, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .tips-box h3 {
+            color: #9c27b0;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .tip-item {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .tip-item h4 {
+            color: #9c27b0;
+            margin-bottom: 8px;
+        }
+
+        .conjugation-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .conjugation-item {
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .regular-ir {
+            border-left: 4px solid #4CAF50;
+        }
+
+        .irregular-ir {
+            border-left: 4px solid #f44336;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .content-section {
+                padding: 20px;
+            }
+            
+            .verb-table {
+                font-size: 0.9em;
+            }
+            
+            .verb-table th,
+            .verb-table td {
+                padding: 10px 8px;
+            }
+            
+            .verb-groups {
+                grid-template-columns: 1fr;
+            }
+            
+            .conjugation-comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-bar {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                max-width: 250px;
+                text-align: center;
+            }
+            
+            .verb-table {
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📝 -ir Verben</h1>
+            <p>Regelmäßige und unregelmäßige Verben auf -ir - Die zweite Verbgruppe</p>
+        </div>
+
+        <div class="nav-bar">
+            <a href="index.html" class="nav-btn">🏠 Hauptseite</a>
+            <a href="cards.html" class="nav-btn">📚 Lernkarten</a>
+            <a href="er.html" class="nav-btn">📝 -er Verben</a>
+            <a href="etre-avoir.html" class="nav-btn">⭐ être & avoir</a>
+            <a href="zeiten.html" class="nav-btn">⏰ Zeiten</a>
+        </div>
+
+        <!-- Grundlagen -->
+        <div class="content-section">
+            <h2 class="section-title">🎯 Grundlagen der -ir Verben</h2>
+            
+            <div class="info-box">
+                <h3>💡 Wichtige Fakten</h3>
+                <ul>
+                    <li>Zweite Verbgruppe im Französischen</li>
+                    <li>Infinitiv endet auf <strong>-ir</strong></li>
+                    <li><strong>Zwei Haupttypen:</strong> regelmäßige und unregelmäßige</li>
+                    <li>Regelmäßige haben <strong>-iss-</strong> Erweiterung im Plural</li>
+                    <li>Unregelmäßige folgen verschiedenen Mustern</li>
+                </ul>
+            </div>
+
+            <div class="warning-box">
+                <h3>⚠️ Achtung!</h3>
+                <p><strong>Nicht alle Verben auf -ir sind gleich!</strong><br>
+                Es gibt regelmäßige -ir Verben (wie finir) und unregelmäßige -ir Verben (wie partir, venir, etc.).<br>
+                Die unregelmäßigen -ir Verben gehören eigentlich zur 3. Verbgruppe.</p>
+            </div>
+        </div>
+
+        <!-- Regelmäßige -ir Verben (Typ finir) -->
+        <div class="content-section">
+            <h2 class="section-title">✅ Regelmäßige -ir Verben (Typ: finir)</h2>
+            
+            <div class="info-box">
+                <h3>📋 Erkennungsmerkmale</h3>
+                <ul>
+                    <li>Partizip Perfekt endet auf <strong>-i</strong></li>
+                    <li>Plural-Formen haben <strong>-iss-</strong> Erweiterung</li>
+                    <li>Beispiel: finir → nous finissons</li>
+                </ul>
+            </div>
+
+            <!-- Présent -->
+            <h3 style="color: #4CAF50; margin: 25px 0 15px 0;">🕐 Présent (Gegenwart)</h3>
+            <table class="verb-table">
+                <thead>
+                    <tr>
+                        <th>Person</th>
+                        <th>Endung</th>
+                        <th>finir (beenden)</th>
+                        <th>choisir (wählen)</th>
+                        <th>réussir (gelingen)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="pronoun">je</td>
+                        <td class="ending">-is</td>
+                        <td>je fin<span class="ending">is</span></td>
+                        <td>je chois<span class="ending">is</span></td>
+                        <td>je réuss<span class="ending">is</span></td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">tu</td>
+                        <td class="ending">-is</td>
+                        <td>tu fin<span class="ending">is</span></td>
+                        <td>tu chois<span class="ending">is</span></td>
+                        <td>tu réuss<span class="ending">is</span></td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">il/elle</td>
+                        <td class="ending">-it</td>
+                        <td>il fin<span class="ending">it</span></td>
+                        <td>elle chois<span class="ending">it</span></td>
+                        <td>il réuss<span class="ending">it</span></td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">nous</td>
+                        <td class="ending">-issons</td>
+                        <td>nous fin<span class="ending">issons</span></td>
+                        <td>nous chois<span class="ending">issons</span></td>
+                        <td>nous réuss<span class="ending">issons</span></td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">vous</td>
+                        <td class="ending">-issez</td>
+                        <td>vous fin<span class="ending">issez</span></td>
+                        <td>vous chois<span class="ending">issez</span></td>
+                        <td>vous réuss<span class="ending">issez</span></td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">ils/elles</td>
+                        <td class="ending">-issent</td>
+                        <td>ils fin<span class="ending">issent</span></td>
+                        <td>elles chois<span class="ending">issent</span></td>
+                        <td>ils réuss<span class="ending">issent</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Imparfait -->
+            <h3 style="color: #4CAF50; margin: 25px 0 15px 0;">🕑 Imparfait (Imperfekt)</h3>
+            <table class="verb-table">
+                <thead>
+                    <tr>
+                        <th>Person</th>
+                        <th>Stamm + Endung</th>
+                        <th>finir</th>
+                        <th>choisir</th>
+                        <th>réfléchir (nachdenken)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="pronoun">je</td>
+                        <td>-issais</td>
+                        <td>je fin<span class="ending">issais</span></td>
+                        <td>je chois<span class="ending">issais</span></td>
+                        <td>je réfléch<span class="ending">issais</span></td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">tu</td>
+                        <td>-issais</td>
+                        <td>tu fin<span class="ending">issais</span></td>
+                        <td>tu chois<span class="ending">issais</span></td>
+                        <td>tu réfléch<span class="ending">issais</span></td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">il/elle</td>
+                        <td>-issait</td>
+                        <td>il fin<span class="ending">issait</span></td>
+                        <td>elle chois<span class="ending">issait</span></td>
+                        <td>il réfléch<span class="ending">issait</span></td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">nous</td>
+                        <td>-issions</td>
+                        <td>nous fin<span class="ending">issions</span></td>
+                        <td>nous chois<span class="ending">issions</span></td>
+                        <td>nous réfléch<span class="ending">issions</span></td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">vous</td>
+                        <td>-issiez</td>
+                        <td>vous fin<span class="ending">issiez</span></td>
+                        <td>vous chois<span class="ending">issiez</span></td>
+                        <td>vous réfléch<span class="ending">issiez</span></td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">ils/elles</td>
+                        <td>-issaient</td>
+                        <td>ils fin<span class="ending">issaient</span></td>
+                        <td>elles chois<span class="ending">issaient</span></td>
+                        <td>ils réfléch<span class="ending">issaient</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Passé composé -->
+            <h3 style="color: #4CAF50; margin: 25px 0 15px 0;">🕓 Passé composé (Perfekt)</h3>
+            <div class="info-box">
+                <h3>📋 Bildung</h3>
+                <ul>
+                    <li><strong>avoir</strong> + Partizip auf <strong>-i</strong></li>
+                    <li>finir → fini, choisir → choisi, réussir → réussi</li>
+                </ul>
+            </div>
+
+            <table class="verb-table">
+                <thead>
+                    <tr>
+                        <th>Person</th>
+                        <th>avoir</th>
+                        <th>finir → fini</th>
+                        <th>choisir → choisi</th>
+                        <th>grandir → grandi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="pronoun">je</td>
+                        <td>ai</td>
+                        <td>j'ai fini</td>
+                        <td>j'ai choisi</td>
+                        <td>j'ai grandi</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">tu</td>
+                        <td>as</td>
+                        <td>tu as fini</td>
+                        <td>tu as choisi</td>
+                        <td>tu as grandi</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">il/elle</td>
+                        <td>a</td>
+                        <td>il a fini</td>
+                        <td>elle a choisi</td>
+                        <td>il a grandi</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">nous</td>
+                        <td>avons</td>
+                        <td>nous avons fini</td>
+                        <td>nous avons choisi</td>
+                        <td>nous avons grandi</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">vous</td>
+                        <td>avez</td>
+                        <td>vous avez fini</td>
+                        <td>vous avez choisi</td>
+                        <td>vous avez grandi</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">ils/elles</td>
+                        <td>ont</td>
+                        <td>ils ont fini</td>
+                        <td>elles ont choisi</td>
+                        <td>ils ont grandi</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Impératif -->
+            <h3 style="color: #4CAF50; margin: 25px 0 15px 0;">🕔 Impératif (Imperativ)</h3>
+            <table class="verb-table">
+                <thead>
+                    <tr>
+                        <th>Form</th>
+                        <th>finir</th>
+                        <th>choisir</th>
+                        <th>réfléchir</th>
+                        <th>Deutsche Bedeutung</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="pronoun">tu → </td>
+                        <td>fin<span class="ending">is</span></td>
+                        <td>chois<span class="ending">is</span></td>
+                        <td>réfléch<span class="ending">is</span></td>
+                        <td>beende! / wähle! / denk nach!</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">nous → </td>
+                        <td>fin<span class="ending">issons</span></td>
+                        <td>chois<span class="ending">issons</span></td>
+                        <td>réfléch<span class="ending">issons</span></td>
+                        <td>beenden wir! / wählen wir!</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">vous → </td>
+                        <td>fin<span class="ending">issez</span></td>
+                        <td>chois<span class="ending">issez</span></td>
+                        <td>réfléch<span class="ending">issez</span></td>
+                        <td>beendet! / wählt! / denkt nach!</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Unregelmäßige -ir Verben -->
+        <div class="content-section">
+            <h2 class="section-title">❌ Unregelmäßige -ir Verben (3. Gruppe)</h2>
+            
+            <div class="warning-box">
+                <h3>⚠️ Wichtiger Hinweis</h3>
+                <p>Diese Verben enden zwar auf -ir, gehören aber zur <strong>3. Verbgruppe</strong> und sind unregelmäßig!<br>
+                Sie haben <strong>keine -iss- Erweiterung</strong> und folgen eigenen Regeln.</p>
+            </div>
+
+            <div class="comparison-box">
+                <h3>🔍 Vergleich: Regelmäßig vs. Unregelmäßig</h3>
+                <div class="conjugation-comparison">
+                    <div class="conjugation-item regular-ir">
+                        <strong>finir (regelmäßig)</strong><br>
+                        je finis<br>
+                        nous fin<span class="ending">issons</span><br>
+                        Partizip: fini
+                    </div>
+                    <div class="conjugation-item irregular-ir">
+                        <strong>partir (unregelmäßig)</strong><br>
+                        je pars<br>
+                        nous partons<br>
+                        Partizip: parti
+                    </div>
+                </div>
+            </div>
+
+            <!-- Häufige unregelmäßige -ir Verben -->
+            <h3 style="color: #f44336; margin: 25px 0 15px 0;">🔴 Wichtige unregelmäßige -ir Verben</h3>
+            
+            <div class="verb-groups">
+                <div class="verb-group">
+                    <h4>Bewegungsverben (mit être!)</h4>
+                    <ul class="verb-list">
+                        <li><strong>partir</strong> (weggehen) → je pars, nous partons</li>
+                        <li><strong>sortir</strong> (ausgehen) → je sors, nous sortons</li>
+                        <li><strong>venir</strong> (kommen) → je viens, nous venons</li>
+                        <li><strong>devenir</strong> (werden) → je deviens, nous devenons</li>
+                    </ul>
+                </div>
+                
+                <div class="verb-group">
+                    <h4>Andere häufige unregelmäßige</h4>
+                    <ul class="verb-list">
+                        <li><strong>dormir</strong> (schlafen) → je dors, nous dormons</li>
+                        <li><strong>mentir</strong> (lügen) → je mens, nous mentons</li>
+                        <li><strong>sentir</strong> (fühlen) → je sens, nous sentons</li>
+                        <li><strong>servir</strong> (servieren) → je sers, nous servons</li>
+                    </ul>
+                </div>
+                
+                <div class="verb-group">
+                    <h4>Besondere Formen</h4>
+                    <ul class="verb-list">
+                        <li><strong>ouvrir</strong> (öffnen) → j'ouvre (wie -er Verb!)</li>
+                        <li><strong>offrir</strong> (anbieten) → j'offre (wie -er Verb!)</li>
+                        <li><strong>mourir</strong> (sterben) → je meurs, nous mourons</li>
+                        <li><strong>courir</strong> (laufen) → je cours, nous courons</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Beispielkonjugation partir -->
+            <h3 style="color: #f44336; margin: 25px 0 15px 0;">📋 Beispiel: partir (weggehen)</h3>
+            <table class="verb-table">
+                <thead>
+                    <tr>
+                        <th>Zeit</th>
+                        <th>je</th>
+                        <th>tu</th>
+                        <th>il/elle</th>
+                        <th>nous</th>
+                        <th>vous</th>
+                        <th>ils/elles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="pronoun">Présent</td>
+                        <td>pars</td>
+                        <td>pars</td>
+                        <td>part</td>
+                        <td>partons</td>
+                        <td>partez</td>
+                        <td>partent</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">Imparfait</td>
+                        <td>partais</td>
+                        <td>partais</td>
+                        <td>partait</td>
+                        <td>partions</td>
+                        <td>partiez</td>
+                        <td>partaient</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">Passé composé</td>
+                        <td class="irregular">suis parti(e)</td>
+                        <td class="irregular">es parti(e)</td>
+                        <td class="irregular">est parti(e)</td>
+                        <td class="irregular">sommes parti(e)s</td>
+                        <td class="irregular">êtes parti(e)s</td>
+                        <td class="irregular">sont parti(e)s</td>
+                    </tr>
+                    <tr>
+                        <td class="pronoun">Futur proche</td>
+                        <td>vais partir</td>
+                        <td>vas partir</td>
+                        <td>va partir</td>
+                        <td>allons partir</td>
+                        <td>allez partir</td>
+                        <td>vont partir</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Häufige regelmäßige -ir Verben -->
+        <div class="content-section">
+            <h2 class="section-title">📝 Häufige regelmäßige -ir Verben</h2>
+            
+            <div class="verb-groups">
+                <div class="verb-group">
+                    <h4>Alltag & Aktivitäten</h4>
+                    <ul class="verb-list">
+                        <li><strong>finir</strong> (beenden, fertig werden)</li>
+                        <li><strong>choisir</strong> (wählen, auswählen)</li>
+                        <li><strong>réussir</strong> (gelingen, schaffen)</li>
+                        <li><strong>remplir</strong> (füllen, ausfüllen)</li>
+                        <li><strong>établir</strong> (errichten, gründen)</li>
+                    </ul>
+                </div>
+                
+                <div class="verb-group">
+                    <h4>Veränderung & Entwicklung</h4>
+                    <ul class="verb-list">
+                        <li><strong>grandir</strong> (wachsen, größer werden)</li>
+                        <li><strong>maigrir</strong> (abnehmen, dünner werden)</li>
+                        <li><strong>grossir</strong> (zunehmen, dicker werden)</li>
+                        <li><strong>vieillir</strong> (altern, älter werden)</li>
+                        <li><strong>rajeunir</strong> (verjüngen, jünger werden)</li>
+                    </ul>
+                </div>
+                
+                <div class="verb-group">
+                    <h4>Geistige Aktivitäten</h4>
+                    <ul class="verb-list">
+                        <li><strong>réfléchir</strong> (nachdenken, überlegen)</li>
+                        <li><strong>obéir</strong> (gehorchen, befolgen)</li>
+                        <li><strong>désobéir</strong> (ungehorsam sein)</li>
+                        <li><strong>applaudir</strong> (applaudieren, klatschen)</li>
+                        <li><strong>saisir</strong> (ergreifen, verstehen)</li>
+                    </ul>
+                </div>
+                
+                <div class="verb-group">
+                    <h4>Farben & Aussehen</h4>
+                    <ul class="verb-list">
+                        <li><strong>rougir</strong> (rot werden, erröten)</li>
+                        <li><strong>pâlir</strong> (blass werden, erblassen)</li>
+                        <li><strong>brunir</strong> (bräunen, braun werden)</li>
+                        <li><strong>blanchir</strong> (weiß werden, bleichen)</li>
+                        <li><strong>jaunir</strong> (gelb werden, vergilben)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lerntipps -->
+        <div class="content-section">
+            <h2 class="section-title">💡 Lerntipps für -ir Verben</h2>
+            
+            <div class="tips-box">
+                <h3>🎯 Effektive Lernstrategien</h3>
+                
+                <div class="tip-item">
+                    <h4>1. Unterscheidung lernen</h4>
+                    <p><strong>Test:</strong> Partizip Perfekt bilden<br>
+                    • Regelmäßig: finir → fini<br>
+                    • Unregelmäßig: partir → parti (aber mit être!)</p>
+                </div>
+                
+                <div class="tip-item">
+                    <h4>2. -iss- Erweiterung merken</h4>
+                    <p>Bei regelmäßigen -ir Verben:<br>
+                    • Singular: kein -iss-<br>
+                    • Plural: immer -iss-<br>
+                    • nous finissons, vous finissez, ils finissent</p>
+                </div>
+                
+                <div class="tip-item">
+                    <h4>3. Bewegungsverben auf -ir</h4>
+                    <p>Merksatz: "partir, sortir, venir - alle mit être!"<br>
+                    Diese bilden Passé composé mit être statt avoir.</p>
+                </div>
+                
+                <div class="tip-item">
+                    <h4>4. Besondere Fälle</h4>
+                    <p><strong>ouvrir</strong> und <strong>offrir</strong> konjugieren wie -er Verben:<br>
+                    j'ouvre, tu ouvres, il ouvre (nicht: j'ouvris!)</p>
+                </div>
+                
+                <div class="tip-item">
+                    <h4>5. Endungen Présent</h4>
+                    <p>Regelmäßige -ir: <strong>-is, -is, -it, -issons, -issez, -issent</strong><br>
+                    Unregelmäßige: verschiedene Muster, einzeln lernen!</p>
+                </div>
+                
+                <div class="tip-item">
+                    <h4>6. Häufigkeits-Prinzip</h4>
+                    <p>Zuerst die häufigsten lernen:<br>
+                    • Regelmäßig: finir, choisir, réussir<br>
+                    • Unregelmäßig: partir, sortir, venir, dormir</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

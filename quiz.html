@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 Französisch Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: white;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .quiz-setup {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .setup-section {
+            margin-bottom: 25px;
+        }
+
+        .setup-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #4CAF50;
+        }
+
+        .option-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .option-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+            border: 2px solid transparent;
+        }
+
+        .option-btn.active {
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            border-color: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .option-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .start-quiz-btn {
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 20px auto 0;
+        }
+
+        .start-quiz-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+
+        .quiz-container {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+            max-width: 700px;
+            width: 100%;
+            display: none;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .quiz-progress {
+            font-size: 1.1em;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .quiz-score {
+            font-size: 1.1em;
+            background: rgba(76, 175, 80, 0.3);
+            padding: 10px 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .question-container {
+            margin-bottom: 30px;
+        }
+
+        .question-type {
+            font-size: 0.9em;
+            color: #4CAF50;
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .question {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 25px;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .question-verb {
+            color: #4CAF50;
+            font-size: 1.2em;
+        }
+
+        .answers {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .answer-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            backdrop-filter: blur(10px);
+            border: 2px solid transparent;
+            text-align: center;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .answer-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .answer-btn.correct {
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            border-color: rgba(255,255,255,0.5);
+            animation: correctPulse 0.6s ease;
+        }
+
+        .answer-btn.incorrect {
+            background: linear-gradient(145deg, #f44336, #d32f2f);
+            border-color: rgba(255,255,255,0.5);
+            animation: incorrectShake 0.6s ease;
+        }
+
+        .answer-btn.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .feedback {
+            background: rgba(255,255,255,0.15);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            border-left: 4px solid #4CAF50;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .feedback-explanation {
+            line-height: 1.5;
+            opacity: 0.9;
+        }
+
+        .next-question-btn {
+            background: linear-gradient(145deg, #2196F3, #1976D2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .next-question-btn.show {
+            display: inline-block;
+        }
+
+        .next-question-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .quiz-results {
+            text-align: center;
+            display: none;
+        }
+
+        .results-title {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .results-score {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #4CAF50;
+        }
+
+        .results-details {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .results-btn {
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .results-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .results-btn.secondary {
+            background: linear-gradient(145deg, #ff9800, #f57c00);
+        }
+
+        .timer {
+            font-size: 1.1em;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            display: none;
+        }
+
+        .timer.show {
+            display: block;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        /* Animations */
+        @keyframes correctPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes incorrectShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .quiz-setup, .quiz-container {
+                padding: 20px;
+            }
+            
+            .answers {
+                grid-template-columns: 1fr;
+            }
+            
+            .quiz-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .results-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .results-btn {
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .question {
+                font-size: 1.2em;
+            }
+            
+            .answer-btn {
+                padding: 12px 15px;
+                font-size: 0.9em;
+            }
+            
+            .option-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .option-btn {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🧠 Französisch Quiz</h1>
+        <p>Teste dein Wissen mit interaktiven Fragen</p>
+    </div>
+
+    <div class="nav-bar">
+        <a href="index.html" class="nav-btn">🏠 Hauptseite</a>
+        <a href="cards.html" class="nav-btn">📚 Lernkarten</a>
+        <a href="memory.html" class="nav-btn">🎮 Memory</a>
+        <a href="regeln.html" class="nav-btn">📖 Regeln</a>
+    </div>
+
+    <!-- Quiz Setup -->
+    <div class="quiz-setup" id="quizSetup">
+        <div class="setup-section">
+            <div class="setup-title">📊 Schwierigkeitsgrad</div>
+            <div class="option-group">
+                <button class="option-btn active" data-difficulty="easy">Einfach (10 Fragen)</button>
+                <button class="option-btn" data-difficulty="medium">Mittel (15 Fragen)</button>
+                <button class="option-btn" data-difficulty="hard">Schwer (20 Fragen)</button>
+            </div>
+        </div>
+
+        <div class="setup-section">
+            <div class="setup-title">🎯 Fragetypen</div>
+            <div class="option-group">
+                <button class="option-btn active" data-type="mixed">Gemischt</button>
+                <button class="option-btn" data-type="conjugation">Konjugation</button>
+                <button class="option-btn" data-type="translation">Übersetzung</button>
+                <button class="option-btn" data-type="grammar">Grammatik</button>
+            </div>
+        </div>
+
+        <div class="setup-section">
+            <div class="setup-title">⏱️ Zeitlimit</div>
+            <div class="option-group">
+                <button class="option-btn active" data-timer="none">Kein Limit</button>
+                <button class="option-btn" data-timer="30">30 Sek/Frage</button>
+                <button class="option-btn" data-timer="60">60 Sek/Frage</button>
+            </div>
+        </div>
+
+        <button class="start-quiz-btn" onclick="startQuiz()">Quiz starten! 🚀</button>
+    </div>
+
+    <!-- Quiz Container -->
+    <div class="quiz-container" id="quizContainer">
+        <div class="quiz-header">
+            <div class="quiz-progress" id="quizProgress">Frage 1 von 10</div>
+            <div class="timer" id="timer">Zeit: 30s</div>
+            <div class="quiz-score" id="quizScore">Punkte: 0</div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="question-container">
+            <div class="question-type" id="questionType">Konjugation</div>
+            <div class="question" id="question">
+                Wie lautet die 1. Person Singular Présent von <span class="question-verb">avoir</span>?
+            </div>
+        </div>
+
+        <div class="answers" id="answers">
+            <!-- Answers will be generated by JavaScript -->
+        </div>
+
+        <div class="feedback" id="feedback">
+            <div class="feedback-title">Richtig! 🎉</div>
+            <div class="feedback-explanation">
+                Die 1. Person Singular Présent von "avoir" ist "j'ai".
+            </div>
+        </div>
+
+        <button class="next-question-btn" id="nextBtn" onclick="nextQuestion()">
+            Nächste Frage →
+        </button>
+    </div>
+
+    <!-- Quiz Results -->
+    <div class="quiz-results" id="quizResults">
+        <div class="results-title">🎉 Quiz beendet!</div>
+        <div class="results-score" id="finalScore">8 von 10 Punkten (80%)</div>
+        
+        <div class="results-details">
+            <p><strong>Richtige Antworten:</strong> <span id="correctCount">8</span></p>
+            <p><strong>Falsche Antworten:</strong> <span id="incorrectCount">2</span></p>
+            <p><strong>Benötigte Zeit:</strong> <span id="totalTime">5:23</span></p>
+            <p><strong>Bewertung:</strong> <span id="grade">Sehr gut!</span></p>
+        </div>
+
+        <div class="results-actions">
+            <button class="results-btn" onclick="restartQuiz()">🔄 Nochmal spielen</button>
+            <button class="results-btn secondary" onclick="reviewMistakes()">📝 Fehler ansehen</button>
+            <a href="cards.html" class="results-btn">📚 Lernkarten</a>
+            <a href="index.html" class="results-btn">🏠 Hauptseite</a>
+        </div>
+    </div>
+
+    <script>
+        // Quiz configuration
+        let quizConfig = {
+            difficulty: 'easy',
+            type: 'mixed',
+            timer: 'none'
+        };
+
+        // Quiz state
+        let currentQuestionIndex = 0;
+        let questions = [];
+        let userAnswers = [];
+        let score = 0;
+        let timeLeft = 0;
+        let timerInterval = null;
+        let quizStartTime = null;
+
+        // Question bank
+        const questionBank = {
+            conjugation: [
+                {
+                    question: 'Wie lautet die 1. Person Singular Présent von <span class="question-verb">avoir</span>?',
+                    answers: ['j\'ai', 'tu as', 'il a', 'nous avons'],
+                    correct: 0,
+                    explanation: 'Die 1. Person Singular Présent von "avoir" ist "j\'ai".'
+                },
+                {
+                    question: 'Wie lautet die 3. Person Plural Présent von <span class="question-verb">être</span>?',
+                    answers: ['ils sont', 'elles sont', 'ils/elles sont', 'vous êtes'],
+                    correct: 2,
+                    explanation: 'Die 3. Person Plural Présent von "être" ist "ils/elles sont".'
+                },
+                {
+                    question: 'Wie lautet die 1. Person Singular Passé composé von <span class="question-verb">aller</span>?',
+                    answers: ['j\'ai allé', 'je suis allé(e)', 'j\'allais', 'je vais'],
+                    correct: 1,
+                    explanation: 'Das Passé composé von "aller" wird mit être gebildet: "je suis allé(e)".'
+                },
+                {
+                    question: 'Wie lautet die 2. Person Singular Impératif von <span class="question-verb">faire</span>?',
+                    answers: ['fais', 'fait', 'faites', 'fasse'],
+                    correct: 0,
+                    explanation: 'Der Impératif 2. Person Singular von "faire" ist "fais".'
+                },
+                {
+                    question: 'Wie lautet die 1. Person Plural Futur proche von <span class="question-verb">prendre</span>?',
+                    answers: ['nous prenons', 'nous allons prendre', 'nous prendrons', 'nous avons pris'],
+                    correct: 1,
+                    explanation: 'Das Futur proche wird mit "aller + Infinitiv" gebildet: "nous allons prendre".'
+                },
+                {
+                    question: 'Wie lautet die 3. Person Singular Présent von <span class="question-verb">pouvoir</span>?',
+                    answers: ['il peut', 'il peux', 'il pouvait', 'il pourra'],
+                    correct: 0,
+                    explanation: 'Die 3. Person Singular Présent von "pouvoir" ist "il peut".'
+                },
+                {
+                    question: 'Wie lautet die 1. Person Singular Imparfait von <span class="question-verb">venir</span>?',
+                    answers: ['je venais', 'je viens', 'je suis venu', 'je viendrai'],
+                    correct: 0,
+                    explanation: 'Die 1. Person Singular Imparfait von "venir" ist "je venais".'
+                },
+                {
+                    question: 'Wie lautet die 2. Person Plural Présent von <span class="question-verb">voir</span>?',
+                    answers: ['vous voyez', 'vous voient', 'vous voyiez', 'vous verrez'],
+                    correct: 0,
+                    explanation: 'Die 2. Person Plural Présent von "voir" ist "vous voyez".'
+                }
+            ],
+            translation: [
+                {
+                    question: 'Was bedeutet <span class="question-verb">avoir</span> auf Deutsch?',
+                    answers: ['sein', 'haben', 'gehen', 'machen'],
+                    correct: 1,
+                    explanation: '"Avoir" bedeutet "haben" auf Deutsch.'
+                },
+                {
+                    question: 'Was bedeutet <span class="question-verb">faire</span> auf Deutsch?',
+                    answers: ['sehen', 'sagen', 'machen', 'nehmen'],
+                    correct: 2,
+                    explanation: '"Faire" bedeutet "machen" auf Deutsch.'
+                },
+                {
+                    question: 'Wie sagt man "können" auf Französisch?',
+                    answers: ['vouloir', 'pouvoir', 'savoir', 'devoir'],
+                    correct: 1,
+                    explanation: '"Können" heißt "pouvoir" auf Französisch.'
+                },
+                {
+                    question: 'Was bedeutet <span class="question-verb">prendre</span> auf Deutsch?',
+                    answers: ['geben', 'nehmen', 'lassen', 'bringen'],
+                    correct: 1,
+                    explanation: '"Prendre" bedeutet "nehmen" auf Deutsch.'
+                },
+                {
+                    question: 'Wie sagt man "wissen" auf Französisch?',
+                    answers: ['connaître', 'savoir', 'voir', 'croire'],
+                    correct: 1,
+                    explanation: '"Wissen" heißt "savoir" auf Französisch.'
+                }
+            ],
+            grammar: [
+                {
+                    question: 'Welches Hilfsverb verwendet man für das Passé composé von <span class="question-verb">aller</span>?',
+                    answers: ['avoir', 'être', 'beides möglich', 'keines'],
+                    correct: 1,
+                    explanation: 'Bewegungsverben wie "aller" bilden das Passé composé mit "être".'
+                },
+                {
+                    question: 'Wie bildet man das Futur proche?',
+                    answers: ['avoir + Partizip', 'être + Partizip', 'aller + Infinitiv', 'Infinitiv + Endung'],
+                    correct: 2,
+                    explanation: 'Das Futur proche wird mit "aller + Infinitiv" gebildet.'
+                },
+                {
+                    question: 'Welche Endung hat die 1. Person Plural im Présent bei regelmäßigen Verben?',
+                    answers: ['-ons', '-ez', '-ent', '-ais'],
+                    correct: 0,
+                    explanation: 'Die 1. Person Plural endet im Présent immer auf "-ons".'
+                },
+                {
+                    question: 'Wie wird das Imparfait gebildet?',
+                    answers: ['Infinitiv + Endung', 'Stamm der 1. Pers. Pl. + Endung', 'avoir/être + Partizip', 'aller + Infinitiv'],
+                    correct: 1,
+                    explanation: 'Das Imparfait wird vom Stamm der 1. Person Plural Présent + Endung gebildet.'
+                }
+            ]
+        };
+
+        // Initialize quiz setup
+        function initQuizSetup() {
+            // Add event listeners to option buttons
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from siblings
+                    this.parentNode.querySelectorAll('.option-btn').forEach(sibling => {
+                        sibling.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Update config
+                    if (this.dataset.difficulty) {
+                        quizConfig.difficulty = this.dataset.difficulty;
+                    } else if (this.dataset.type) {
+                        quizConfig.type = this.dataset.type;
+                    } else if (this.dataset.timer) {
+                        quizConfig.timer = this.dataset.timer;
+                    }
+                });
+            });
+        }
+
+        function startQuiz() {
+            // Hide setup, show quiz
+            document.getElementById('quizSetup').style.display = 'none';
+            document.getElementById('quizContainer').style.display = 'block';
+            
+            // Generate questions based on config
+            generateQuestions();
+            
+            // Initialize quiz state
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            score = 0;
+            quizStartTime = Date.now();
+            
+            // Show first question
+            showQuestion();
+        }
+
+        function generateQuestions() {
+            questions = [];
+            
+            // Determine number of questions
+            const questionCounts = { easy: 10, medium: 15, hard: 20 };
+            const totalQuestions = questionCounts[quizConfig.difficulty];
+            
+            // Select question types
+            let questionTypes = [];
+            if (quizConfig.type === 'mixed') {
+                questionTypes = ['conjugation', 'translation', 'grammar'];
+            } else {
+                questionTypes = [quizConfig.type];
+            }
+            
+            // Generate questions
+            for (let i = 0; i < totalQuestions; i++) {
+                const type = questionTypes[i % questionTypes.length];
+                const typeQuestions = questionBank[type];
+                const randomQuestion = typeQuestions[Math.floor(Math.random() * typeQuestions.length)];
+                
+                questions.push({
+                    ...randomQuestion,
+                    type: type
+                });
+            }
+            
+            // Shuffle questions
+            for (let i = questions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [questions[i], questions[j]] = [questions[j], questions[i]];
+            }
+        }
+
+        function showQuestion() {
+            const question = questions[currentQuestionIndex];
+            
+            // Update progress
+            document.getElementById('quizProgress').textContent = 
+                `Frage ${currentQuestionIndex + 1} von ${questions.length}`;
+            
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            
+            // Update score
+            document.getElementById('quizScore').textContent = `Punkte: ${score}`;
+            
+            // Show question
+            document.getElementById('questionType').textContent = 
+                question.type === 'conjugation' ? 'Konjugation' :
+                question.type === 'translation' ? 'Übersetzung' : 'Grammatik';
+            
+            document.getElementById('question').innerHTML = question.question;
+            
+            // Show answers
+            const answersContainer = document.getElementById('answers');
+            answersContainer.innerHTML = '';
+            
+            question.answers.forEach((answer, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'answer-btn';
+                btn.textContent = answer;
+                btn.onclick = () => selectAnswer(index);
+                answersContainer.appendChild(btn);
+            });
+            
+            // Hide feedback and next button
+            document.getElementById('feedback').classList.remove('show');
+            document.getElementById('nextBtn').classList.remove('show');
+            
+            // Start timer if enabled
+            if (quizConfig.timer !== 'none') {
+                startTimer();
+            } else {
+                document.getElementById('timer').classList.remove('show');
+            }
+        }
+
+        function selectAnswer(selectedIndex) {
+            const question = questions[currentQuestionIndex];
+            const isCorrect = selectedIndex === question.correct;
+            
+            // Record answer
+            userAnswers.push({
+                questionIndex: currentQuestionIndex,
+                selectedIndex: selectedIndex,
+                correct: isCorrect,
+                timeSpent: quizConfig.timer !== 'none' ? 
+                    parseInt(quizConfig.timer) - timeLeft : null
+            });
+            
+            // Update score
+            if (isCorrect) {
+                score++;
+            }
+            
+            // Show feedback
+            showFeedback(isCorrect, question);
+            
+            // Disable all answer buttons
+            document.querySelectorAll('.answer-btn').forEach((btn, index) => {
+                btn.classList.add('disabled');
+                btn.onclick = null;
+                
+                if (index === question.correct) {
+                    btn.classList.add('correct');
+                } else if (index === selectedIndex && !isCorrect) {
+                    btn.classList.add('incorrect');
+                }
+            });
+            
+            // Stop timer
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+            
+            // Show next button
+            document.getElementById('nextBtn').classList.add('show');
+        }
+
+        function showFeedback(isCorrect, question) {
+            const feedback = document.getElementById('feedback');
+            const title = feedback.querySelector('.feedback-title');
+            const explanation = feedback.querySelector('.feedback-explanation');
+            
+            if (isCorrect) {
+                title.textContent = 'Richtig! 🎉';
+                feedback.style.borderLeftColor = '#4CAF50';
+            } else {
+                title.textContent = 'Leider falsch 😔';
+                feedback.style.borderLeftColor = '#f44336';
+            }
+            
+            explanation.textContent = question.explanation;
+            feedback.classList.add('show');
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            
+            if (currentQuestionIndex < questions.length) {
+                showQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function startTimer() {
+            timeLeft = parseInt(quizConfig.timer);
+            const timerElement = document.getElementById('timer');
+            timerElement.classList.add('show');
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerElement.textContent = `Zeit: ${timeLeft}s`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    // Auto-select wrong answer
+                    selectAnswer(-1);
+                }
+            }, 1000);
+        }
+
+        function showResults() {
+            // Hide quiz, show results
+            document.getElementById('quizContainer').style.display = 'none';
+            document.getElementById('quizResults').style.display = 'block';
+            
+            // Calculate results
+            const totalQuestions = questions.length;
+            const correctAnswers = score;
+            const incorrectAnswers = totalQuestions - correctAnswers;
+            const percentage = Math.round((correctAnswers / totalQuestions) * 100);
+            const totalTime = Math.floor((Date.now() - quizStartTime) / 1000);
+            const minutes = Math.floor(totalTime / 60);
+            const seconds = totalTime % 60;
+            
+            // Determine grade
+            let grade = '';
+            if (percentage >= 90) grade = 'Ausgezeichnet! 🏆';
+            else if (percentage >= 80) grade = 'Sehr gut! 🎉';
+            else if (percentage >= 70) grade = 'Gut! 👍';
+            else if (percentage >= 60) grade = 'Befriedigend 👌';
+            else grade = 'Noch üben! 💪';
+            
+            // Update results display
+            document.getElementById('finalScore').textContent = 
+                `${correctAnswers} von ${totalQuestions} Punkten (${percentage}%)`;
+            document.getElementById('correctCount').textContent = correctAnswers;
+            document.getElementById('incorrectCount').textContent = incorrectAnswers;
+            document.getElementById('totalTime').textContent = 
+                `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('grade').textContent = grade;
+        }
+
+        function restartQuiz() {
+            // Reset to setup
+            document.getElementById('quizResults').style.display = 'none';
+            document.getElementById('quizSetup').style.display = 'block';
+        }
+
+        function reviewMistakes() {
+            // This could open a detailed review of wrong answers
+            alert('Fehleranalyse wird in einer zukünftigen Version verfügbar sein!');
+        }
+
+        // Initialize
+        initQuizSetup();
+    </script>
+</body>
+</html>
+

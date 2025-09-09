@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Französisch-Grammatikregeln</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background-color: #f0f8ff; margin: 0; padding: 20px; }
+        .card-container { perspective: 1000px; width: 90%; max-width: 600px; height: 350px; margin-bottom: 20px; }
+        .card { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.6s; cursor: pointer; }
+        .card.is-flipped { transform: rotateY(180deg); }
+        .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; text-align: center; padding: 20px; box-sizing: border-box; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .card-front { background-color: #fff; }
+        .card-back { background-color: #e6f7ff; transform: rotateY(180deg); }
+        .rule-title { font-size: 1.8em; font-weight: bold; color: #2c3e50; margin-bottom: 10px; }
+        .rule-category { font-size: 1.1em; color: #e74c3c; font-weight: bold; margin-bottom: 15px; }
+        .rule-explanation { font-size: 1em; text-align: left; width: 100%; overflow-y: auto; line-height: 1.4; }
+        .navigation { display: flex; justify-content: space-between; width: 90%; max-width: 600px; margin-bottom: 10px; }
+        .counter { text-align: center; color: #666; margin-bottom: 10px; }
+        button { padding: 10px 20px; font-size: 1em; border: none; border-radius: 5px; background-color: #3498db; color: white; cursor: pointer; }
+        button:disabled { background-color: #bdc3c7; }
+        button:hover:not(:disabled) { background-color: #2980b9; }
+        h1 { color: #2c3e50; margin-bottom: 10px; }
+        .subtitle { color: #7f8c8d; margin-bottom: 20px; }
+        .example { background-color: #f8f9fa; padding: 8px; border-left: 3px solid #3498db; margin: 8px 0; }
+    </style>
+</head>
+<body>
+
+    <h1>Französisch-Grammatikregeln</h1>
+    <p class="subtitle">Regeln und Ausnahmen für deinen Test</p>
+    
+    <div class="counter">
+        <span id="card-counter">1 / 15</span>
+    </div>
+    
+    <div class="card-container">
+        <div class="card" id="flashcard">
+            <div class="card-face card-front">
+                <div>
+                    <div class="rule-category" id="rule-category"></div>
+                    <div class="rule-title" id="rule-title"></div>
+                </div>
+            </div>
+            <div class="card-face card-back">
+                <div class="rule-explanation" id="rule-explanation"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button id="prev-btn">Zurück</button>
+        <button id="next-btn">Weiter</button>
+    </div>
+
+    <script>
+        const rules = [
+            {
+                category: "PRÉSENT",
+                title: "Regelmäßige Verben auf -er",
+                explanation: `
+                    <strong>Regel:</strong> Stamm + Endungen: -e, -es, -e, -ons, -ez, -ent<br><br>
+                    <div class="example"><strong>Beispiel "parler":</strong><br>
+                    je parle, tu parles, il parle<br>
+                    nous parlons, vous parlez, elles parlent</div>
+                    <strong>⚠️ Ausnahme:</strong> Verben auf -ger (manger) → nous mangeons<br>
+                    <strong>⚠️ Ausnahme:</strong> Verben auf -cer (commencer) → nous commençons
+                `
+            },
+            {
+                category: "PRÉSENT",
+                title: "Regelmäßige Verben auf -ir",
+                explanation: `
+                    <strong>Regel:</strong> Stamm + -iss- + Endungen: -is, -is, -it, -issons, -issez, -issent<br><br>
+                    <div class="example"><strong>Beispiel "finir":</strong><br>
+                    je finis, tu finis, il finit<br>
+                    nous finissons, vous finissez, elles finissent</div>
+                    <strong>✅ Tipp:</strong> Das -iss- ist das Erkennungszeichen für regelmäßige -ir Verben!
+                `
+            },
+            {
+                category: "PRÉSENT",
+                title: "Regelmäßige Verben auf -re",
+                explanation: `
+                    <strong>Regel:</strong> Stamm (ohne -re) + Endungen: -s, -s, -, -ons, -ez, -ent<br><br>
+                    <div class="example"><strong>Beispiel "vendre":</strong><br>
+                    je vends, tu vends, il vend<br>
+                    nous vendons, vous vendez, elles vendent</div>
+                    <strong>⚠️ Wichtig:</strong> 3. Person Singular hat KEINE Endung!
+                `
+            },
+            {
+                category: "IMPARFAIT",
+                title: "Bildung des Imparfait",
+                explanation: `
+                    <strong>Super-Regel:</strong> nous-Form im Présent → -ons weg → Imparfait-Stamm<br><br>
+                    <strong>Endungen:</strong> -ais, -ais, -ait, -ions, -iez, -aient<br><br>
+                    <div class="example"><strong>Beispiel "parler":</strong><br>
+                    nous parlons → parl- → je parlais, tu parlais...</div>
+                    <strong>⚠️ Einzige Ausnahme:</strong> être → j'étais (Stamm: ét-)
+                `
+            },
+            {
+                category: "IMPARFAIT",
+                title: "Verwendung des Imparfait",
+                explanation: `
+                    <strong>Wann verwenden?</strong><br>
+                    • Gewohnheiten in der Vergangenheit<br>
+                    • Beschreibungen (Wetter, Aussehen)<br>
+                    • Gleichzeitige Handlungen<br><br>
+                    <div class="example"><strong>Beispiele:</strong><br>
+                    Quand j'étais petit, je jouais au football. (Gewohnheit)<br>
+                    Il faisait beau. (Beschreibung)</div>
+                `
+            },
+            {
+                category: "FUTUR PROCHE",
+                title: "Bildung des Futur proche",
+                explanation: `
+                    <strong>Regel:</strong> aller (konjugiert) + Infinitiv<br><br>
+                    <strong>aller im Présent:</strong><br>
+                    je vais, tu vas, il va, nous allons, vous allez, elles vont<br><br>
+                    <div class="example"><strong>Beispiele:</strong><br>
+                    Je vais manger. (Ich werde essen.)<br>
+                    Nous allons partir. (Wir werden weggehen.)</div>
+                    <strong>✅ Tipp:</strong> Einfachste Zukunftsform!
+                `
+            },
+            {
+                category: "FUTUR PROCHE",
+                title: "Verwendung des Futur proche",
+                explanation: `
+                    <strong>Wann verwenden?</strong><br>
+                    • Nahe Zukunft (bald passierend)<br>
+                    • Geplante Handlungen<br>
+                    • Absichten<br><br>
+                    <div class="example"><strong>Beispiele:</strong><br>
+                    Je vais faire mes devoirs ce soir. (heute Abend)<br>
+                    Il va pleuvoir. (Es wird regnen - bald)</div>
+                    <strong>✅ Wie im Deutschen:</strong> "Ich werde..."
+                `
+            },
+            {
+                category: "PASSÉ COMPOSÉ",
+                title: "Bildung mit avoir",
+                explanation: `
+                    <strong>Regel:</strong> avoir (konjugiert) + Partizip Perfekt<br><br>
+                    <strong>avoir im Présent:</strong> j'ai, tu as, il a, nous avons, vous avez, elles ont<br><br>
+                    <div class="example"><strong>Partizip-Bildung:</strong><br>
+                    -er → -é (parler → parlé)<br>
+                    -ir → -i (finir → fini)<br>
+                    -re → -u (vendre → vendu)</div>
+                    <strong>✅ Die meisten Verben verwenden avoir!</strong>
+                `
+            },
+            {
+                category: "PASSÉ COMPOSÉ",
+                title: "Bildung mit être",
+                explanation: `
+                    <strong>être-Verben:</strong> Meist Bewegungsverben + reflexive Verben<br><br>
+                    <strong>Wichtige être-Verben:</strong><br>
+                    aller/venir, arriver/partir, entrer/sortir, monter/descendre, naître/mourir, rester, tomber<br><br>
+                    <div class="example"><strong>Beispiel:</strong><br>
+                    Je suis allé(e). Tu es venu(e). Il est parti.</div>
+                    <strong>⚠️ Wichtig:</strong> Partizip richtet sich nach Subjekt (männlich/weiblich)!
+                `
+            },
+            {
+                category: "PASSÉ COMPOSÉ",
+                title: "Unregelmäßige Partizipien",
+                explanation: `
+                    <strong>Wichtige unregelmäßige Partizipien:</strong><br><br>
+                    avoir → eu, être → été, faire → fait<br>
+                    prendre → pris, voir → vu, dire → dit<br>
+                    écrire → écrit, lire → lu, boire → bu<br>
+                    pouvoir → pu, vouloir → voulu, savoir → su<br><br>
+                    <div class="example"><strong>Beispiele:</strong><br>
+                    J'ai eu, j'ai fait, j'ai pris</div>
+                    <strong>✅ Tipp:</strong> Diese auswendig lernen!
+                `
+            },
+            {
+                category: "IMPÉRATIF",
+                title: "Bildung des Impératif",
+                explanation: `
+                    <strong>Regel:</strong> Présent-Formen ohne Pronomen<br><br>
+                    <strong>Formen:</strong> tu, nous, vous (2. Person Sg., 1. Person Pl., 2. Person Pl.)<br><br>
+                    <div class="example"><strong>Beispiel "parler":</strong><br>
+                    Parle! (Sprich!)<br>
+                    Parlons! (Sprechen wir!)<br>
+                    Parlez! (Sprecht!/Sprechen Sie!)</div>
+                    <strong>⚠️ Ausnahme:</strong> -er Verben: tu-Form ohne -s → Parle! (nicht "Parles!")
+                `
+            },
+            {
+                category: "IMPÉRATIF",
+                title: "Unregelmäßige Imperative",
+                explanation: `
+                    <strong>Wichtige unregelmäßige Formen:</strong><br><br>
+                    <strong>être:</strong> sois, soyons, soyez<br>
+                    <strong>avoir:</strong> aie, ayons, ayez<br>
+                    <strong>aller:</strong> va, allons, allez<br><br>
+                    <div class="example"><strong>Beispiele:</strong><br>
+                    Sois sage! (Sei brav!)<br>
+                    Ayez patience! (Haben Sie Geduld!)</div>
+                `
+            },
+            {
+                category: "REFLEXIVE VERBEN",
+                title: "Reflexive Verben im Présent",
+                explanation: `
+                    <strong>Regel:</strong> Reflexivpronomen + Verb<br><br>
+                    <strong>Pronomen:</strong> me, te, se, nous, vous, se<br><br>
+                    <div class="example"><strong>Beispiel "se lever":</strong><br>
+                    je me lève, tu te lèves, il se lève<br>
+                    nous nous levons, vous vous levez, elles se lèvent</div>
+                    <strong>⚠️ Vor Vokal:</strong> me/te/se → m'/t'/s' (je m'appelle)
+                `
+            },
+            {
+                category: "REFLEXIVE VERBEN",
+                title: "Reflexive Verben im Passé composé",
+                explanation: `
+                    <strong>Regel:</strong> Immer mit être + Partizip richtet sich nach Subjekt<br><br>
+                    <div class="example"><strong>Beispiel "se lever":</strong><br>
+                    Je me suis levé(e)<br>
+                    Tu t'es levé(e)<br>
+                    Il s'est levé / Elle s'est levée</div>
+                    <strong>✅ Tipp:</strong> Männlich → -é, weiblich → -ée, Plural → -és/-ées
+                `
+            },
+            {
+                category: "LERNTIPPS",
+                title: "Die wichtigsten Merksätze",
+                explanation: `
+                    <strong>🎯 Für den Test merken:</strong><br><br>
+                    <strong>Imparfait:</strong> nous-Form → -ons weg → Stamm + Endungen<br>
+                    <strong>Futur proche:</strong> aller + Infinitiv = super einfach!<br>
+                    <strong>Passé composé:</strong> Bewegung = être, Rest = avoir<br>
+                    <strong>Impératif:</strong> -er Verben ohne -s in tu-Form<br><br>
+                    <div class="example"><strong>Eselsbrücke être-Verben:</strong><br>
+                    "Dr. Mrs. Vandertramp" (devenir, revenir, mourir, retourner, sortir, venir, aller, naître, descendre, entrer, rentrer, tomber, rester, arriver, monter, partir)</div>
+                `
+            }
+        ];
+
+        let currentCard = 0;
+
+        const card = document.getElementById('flashcard');
+        const ruleCategory = document.getElementById('rule-category');
+        const ruleTitle = document.getElementById('rule-title');
+        const ruleExplanation = document.getElementById('rule-explanation');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const cardCounter = document.getElementById('card-counter');
+
+        function showCard() {
+            const rule = rules[currentCard];
+            ruleCategory.textContent = rule.category;
+            ruleTitle.textContent = rule.title;
+            ruleExplanation.innerHTML = rule.explanation;
+            cardCounter.textContent = `${currentCard + 1} / ${rules.length}`;
+            card.classList.remove('is-flipped');
+            updateButtons();
+        }
+
+        function updateButtons() {
+            prevBtn.disabled = currentCard === 0;
+            nextBtn.disabled = currentCard === rules.length - 1;
+        }
+
+        card.addEventListener('click', () => {
+            card.classList.toggle('is-flipped');
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentCard > 0) {
+                currentCard--;
+                showCard();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentCard < rules.length - 1) {
+                currentCard++;
+                showCard();
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' && currentCard > 0) {
+                currentCard--;
+                showCard();
+            } else if (e.key === 'ArrowRight' && currentCard < rules.length - 1) {
+                currentCard++;
+                showCard();
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                card.classList.toggle('is-flipped');
+            }
+        });
+
+        showCard();
+    </script>
+
+</body>
+</html>
+

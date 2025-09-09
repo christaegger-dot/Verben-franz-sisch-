@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 Französisch Lernkarten - Erweitert</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: white;
+            touch-action: manipulation;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .info-card {
+            background: rgba(255,255,255,0.2);
+            padding: 15px 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .info-number {
+            font-size: 1.8em;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .info-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .progress-bar {
+            width: 100%;
+            max-width: 800px;
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .card-container {
+            perspective: 1000px;
+            width: 100%;
+            max-width: 700px;
+            height: 450px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+            cursor: pointer;
+            border-radius: 20px;
+        }
+
+        .card.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .card-front {
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            color: #333;
+        }
+
+        .card-back {
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .verb-infinitive {
+            font-size: 2.8em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .verb-translation {
+            font-size: 1.6em;
+            color: #e74c3c;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .verb-type {
+            font-size: 1.1em;
+            color: #7f8c8d;
+            font-style: italic;
+            background: rgba(0,0,0,0.05);
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .verb-tenses {
+            font-size: 1em;
+            text-align: left;
+            width: 100%;
+            overflow-y: auto;
+            line-height: 1.6;
+            max-height: 100%;
+        }
+
+        .verb-tenses strong {
+            color: #fff;
+            font-size: 1.1em;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 700px;
+            margin-bottom: 20px;
+            gap: 20px;
+        }
+
+        .nav-button {
+            background: linear-gradient(145deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            font-weight: bold;
+            min-width: 120px;
+            touch-action: manipulation;
+        }
+
+        .nav-button:disabled {
+            background: linear-gradient(145deg, #bdc3c7, #95a5a6);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .nav-button:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-button:active:not(:disabled) {
+            transform: translateY(-1px);
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .control-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .control-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .difficulty-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .difficulty-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .difficulty-btn.active {
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .difficulty-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .swipe-hint {
+            text-align: center;
+            opacity: 0.7;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        .achievement {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            transform: translateX(300px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .achievement.show {
+            transform: translateX(0);
+        }
+
+        /* Touch gestures */
+        .card-container.swiping {
+            transition: none;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .card-container {
+                height: 400px;
+            }
+            
+            .verb-infinitive {
+                font-size: 2.2em;
+            }
+            
+            .verb-translation {
+                font-size: 1.3em;
+            }
+            
+            .verb-tenses {
+                font-size: 0.9em;
+            }
+            
+            .game-info {
+                justify-content: center;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-button {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card-container {
+                height: 350px;
+            }
+            
+            .card-face {
+                padding: 20px;
+            }
+            
+            .verb-infinitive {
+                font-size: 1.8em;
+            }
+            
+            .verb-translation {
+                font-size: 1.1em;
+            }
+            
+            .verb-tenses {
+                font-size: 0.8em;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .control-btn {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .card {
+            animation: slideIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📚 Französisch Lernkarten</h1>
+        <p>Erweiterte Version mit 32 wichtigen Verben</p>
+    </div>
+
+    <div class="nav-bar">
+        <a href="index.html" class="nav-btn">🏠 Hauptseite</a>
+        <a href="quiz.html" class="nav-btn">🧠 Quiz</a>
+        <a href="memory.html" class="nav-btn">🎮 Memory</a>
+        <a href="regeln.html" class="nav-btn">📖 Regeln</a>
+    </div>
+
+    <div class="difficulty-selector">
+        <button class="difficulty-btn active" onclick="setDifficulty('all')">Alle Verben</button>
+        <button class="difficulty-btn" onclick="setDifficulty('irregular')">Nur Unregelmäßige</button>
+        <button class="difficulty-btn" onclick="setDifficulty('regular')">Nur Regelmäßige</button>
+        <button class="difficulty-btn" onclick="setDifficulty('modal')">Modalverben</button>
+    </div>
+
+    <div class="game-info">
+        <div class="info-card">
+            <span class="info-number" id="current-card">1</span>
+            <span class="info-label">Aktuelle Karte</span>
+        </div>
+        <div class="info-card">
+            <span class="info-number" id="total-cards">32</span>
+            <span class="info-label">Gesamt</span>
+        </div>
+        <div class="info-card">
+            <span class="info-number" id="studied-cards">0</span>
+            <span class="info-label">Gelernt</span>
+        </div>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+    </div>
+
+    <div class="card-container" id="cardContainer">
+        <div class="card" id="flashcard">
+            <div class="card-face card-front">
+                <div>
+                    <div class="verb-infinitive" id="verb-infinitive"></div>
+                    <div class="verb-translation" id="verb-translation"></div>
+                    <div class="verb-type" id="verb-type"></div>
+                </div>
+            </div>
+            <div class="card-face card-back">
+                <div class="verb-tenses" id="verb-tenses"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-button" id="prev-btn">← Zurück</button>
+        <button class="nav-button" id="next-btn">Weiter →</button>
+    </div>
+
+    <div class="controls">
+        <button class="control-btn" onclick="toggleCard()">🔄 Karte umdrehen</button>
+        <button class="control-btn" onclick="shuffleCards()">🎲 Mischen</button>
+        <button class="control-btn" onclick="resetProgress()">🔄 Fortschritt zurücksetzen</button>
+        <button class="control-btn" onclick="toggleAutoplay()">⏯️ Autoplay</button>
+    </div>
+
+    <div class="swipe-hint">
+        💡 Tipp: Wische nach links/rechts oder nutze die Pfeiltasten
+    </div>
+
+    <div class="achievement" id="achievement"></div>
+
+    <script>
+        const allVerbs = [
+            {
+                infinitive: "avoir",
+                translation: "haben",
+                type: "unregelmäßig - Hilfsverb",
+                category: "irregular",
+                tenses: `
+                    <strong>Présent:</strong> j'ai, tu as, il a, nous avons, vous avez, elles ont<br>
+                    <strong>Imparfait:</strong> j'avais, tu avais, il avait, nous avions, vous aviez, elles avaient<br>
+                    <strong>Futur proche:</strong> je vais avoir, tu vas avoir, il va avoir, nous allons avoir, vous allez avoir, elles vont avoir<br>
+                    <strong>Passé composé:</strong> j'ai eu, tu as eu, il a eu, nous avons eu, vous avez eu, elles ont eu<br>
+                    <strong>Impératif:</strong> aie, ayons, ayez
+                `
+            },
+            {
+                infinitive: "être",
+                translation: "sein",
+                type: "unregelmäßig - Hilfsverb",
+                category: "irregular",
+                tenses: `
+                    <strong>Présent:</strong> je suis, tu es, il est, nous sommes, vous êtes, elles sont<br>
+                    <strong>Imparfait:</strong> j'étais, tu étais, il était, nous étions, vous étiez, elles étaient<br>
+                    <strong>Futur proche:</strong> je vais être, tu vas être, il va être, nous allons être, vous allez être, elles vont être<br>
+                    <strong>Passé composé:</strong> j'ai été, tu as été, il a été, nous avons été, vous avez été, elles ont été<br>
+                    <strong>Impératif:</strong> sois, soyons, soyez
+                `
+            },
+            {
+                infinitive: "aller",
+                translation: "gehen",
+                type: "unregelmäßig - Bewegung (être!)",
+                category: "irregular",
+                tenses: `
+                    <strong>Présent:</strong> je vais, tu vas, il va, nous allons, vous allez, elles vont<br>
+                    <strong>Imparfait:</strong> j'allais, tu allais, il allait, nous allions, vous alliez, elles allaient<br>
+                    <strong>Futur proche:</strong> je vais aller, tu vas aller, il va aller, nous allons aller, vous allez aller, elles vont aller<br>
+                    <strong>Passé composé:</strong> je suis allé(e), tu es allé(e), il est allé, nous sommes allé(e)s, vous êtes allé(e)s, elles sont allées<br>
+                    <strong>Impératif:</strong> va, allons, allez
+                `
+            },
+            {
+                infinitive: "faire",
+                translation: "machen",
+                type: "unregelmäßig - sehr häufig",
+                category: "irregular",
+                tenses: `
+                    <strong>Présent:</strong> je fais, tu fais, il fait, nous faisons, vous faites, elles font<br>
+                    <strong>Imparfait:</strong> je faisais, tu faisais, il faisait, nous faisions, vous faisiez, elles faisaient<br>
+                    <strong>Futur proche:</strong> je vais faire, tu vas faire, il va faire, nous allons faire, vous allez faire, elles vont faire<br>
+                    <strong>Passé composé:</strong> j'ai fait, tu as fait, il a fait, nous avons fait, vous avez fait, elles ont fait<br>
+                    <strong>Impératif:</strong> fais, faisons, faites
+                `
+            },
+            {
+                infinitive: "pouvoir",
+                translation: "können",
+                type: "unregelmäßig - Modalverb",
+                category: "modal",
+                tenses: `
+                    <strong>Présent:</strong> je peux, tu peux, il peut, nous pouvons, vous pouvez, elles peuvent<br>
+                    <strong>Imparfait:</strong> je pouvais, tu pouvais, il pouvait, nous pouvions, vous pouviez, elles pouvaient<br>
+                    <strong>Futur proche:</strong> je vais pouvoir, tu vas pouvoir, il va pouvoir, nous allons pouvoir, vous allez pouvoir, elles vont pouvoir<br>
+                    <strong>Passé composé:</strong> j'ai pu, tu as pu, il a pu, nous avons pu, vous avez pu, elles ont pu<br>
+                    <strong>Impératif:</strong> (selten verwendet)
+                `
+            },
+            {
+                infinitive: "vouloir",
+                translation: "wollen",
+                type: "unregelmäßig - Modalverb",
+                category: "modal",
+                tenses: `
+                    <strong>Présent:</strong> je veux, tu veux, il veut, nous voulons, vous voulez, elles veulent<br>
+                    <strong>Imparfait:</strong> je voulais, tu voulais, il voulait, nous voulions, vous vouliez, elles voulaient<br>
+                    <strong>Futur proche:</strong> je vais vouloir, tu vas vouloir, il va vouloir, nous allons vouloir, vous allez vouloir, elles vont vouloir<br>
+                    <strong>Passé composé:</strong> j'ai voulu, tu as voulu, il a voulu, nous avons voulu, vous avez voulu, elles ont voulu<br>
+                    <strong>Impératif:</strong> (selten: veuille, veuillons, veuillez)
+                `
+            },
+            {
+                infinitive: "savoir",
+                translation: "wissen",
+                type: "unregelmäßig - wichtig",
+                category: "irregular",
+                tenses: `
+                    <strong>Présent:</strong> je sais, tu sais, il sait, nous savons, vous savez, elles savent<br>
+                    <strong>Imparfait:</strong> je savais, tu savais, il savait, nous savions, vous saviez, elles savaient<br>
+                    <strong>Futur proche:</strong> je vais savoir, tu vas savoir, il va savoir, nous allons savoir, vous allez savoir, elles vont savoir<br>
+                    <strong>Passé composé:</strong> j'ai su, tu as su, il a su, nous avons su, vous avez su, elles ont su<br>
+                    <strong>Impératif:</strong> sache, sachons, sachez
+                `
+            },
+            {
+                infinitive: "devoir",
+                translation: "müssen",
+                type: "unregelmäßig - Modalverb",
+                category: "modal",
+                tenses: `
+                    <strong>Présent:</strong> je dois, tu dois, il doit, nous devons, vous devez, elles doivent<br>
+                    <strong>Imparfait:</strong> je devais, tu devais, il devait, nous devions, vous deviez, elles devaient<br>
+                    <strong>Futur proche:</strong> je vais devoir, tu vas devoir, il va devoir, nous allons devoir, vous allez devoir, elles vont devoir<br>
+                    <strong>Passé composé:</strong> j'ai dû, tu as dû, il a dû, nous avons dû, vous avez dû, elles ont dû<br>
+                    <strong>Impératif:</strong> dois, devons, devez
+                `
+            },
+            {
+                infinitive: "prendre",
+                translation: "nehmen",
+                type: "unregelmäßig - häufig",
+                category: "irregular",
+                tenses: `
+                    <strong>Présent:</strong> je prends, tu prends, il prend, nous prenons, vous prenez, elles prennent<br>
+                    <strong>Imparfait:</strong> je prenais, tu prenais, il prenait, nous prenions, vous preniez, elles prenaient<br>
+                    <strong>Futur proche:</strong> je vais prendre, tu vas prendre, il va prendre, nous allons prendre, vous allez prendre, elles vont prendre<br>
+                    <strong>Passé composé:</strong> j'ai pris, tu as pris, il a pris, nous avons pris, vous avez pris, elles ont pris<br>
+                    <strong>Impératif:</strong> prends, prenons, prenez
+                `
+            },
+            {
+                infinitive: "venir",
+                translation: "kommen",
+                type: "unregelmäßig - Bewegung (être!)",
+                category: "irregular",
+                tenses: `
+                    <strong>Présent:</strong> je viens, tu viens, il vient, nous venons, vous venez, elles viennent<br>
+                    <strong>Imparfait:</strong> je venais, tu venais, il venait, nous venions, vous veniez, elles venaient<br>
+                    <strong>Futur proche:</strong> je vais venir, tu vas venir, il va venir, nous allons venir, vous allez venir, elles vont venir<br>
+                    <strong>Passé composé:</strong> je suis venu(e), tu es venu(e), il est venu, nous sommes venu(e)s, vous êtes venu(e)s, elles sont venues<br>
+                    <strong>Impératif:</strong> viens, venons, venez
+                `
+            },
+            {
+                infinitive: "voir",
+                translation: "sehen",
+                type: "unregelmäßig - häufig",
+                category: "irregular",
+                tenses: `
+                    <strong>Présent:</strong> je vois, tu vois, il voit, nous voyons, vous voyez, elles voient<br>
+                    <strong>Imparfait:</strong> je voyais, tu voyais, il voyait, nous voyions, vous voyiez, elles voyaient<br>
+                    <strong>Futur proche:</strong> je vais voir, tu vas voir, il va voir, nous allons voir, vous allez voir, elles vont voir<br>
+                    <strong>Passé composé:</strong> j'ai vu, tu as vu, il a vu, nous avons vu, vous avez vu, elles ont vu<br>
+                    <strong>Impératif:</strong> vois, voyons, voyez
+                `
+            },
+            {
+                infinitive: "dire",
+                translation: "sagen",
+                type: "unregelmäßig - wichtig",
+                category: "irregular",
+                tenses: `
+                    <strong>Présent:</strong> je dis, tu dis, il dit, nous disons, vous dites, elles disent<br>
+                    <strong>Imparfait:</strong> je disais, tu disais, il disait, nous disions, vous disiez, elles disaient<br>
+                    <strong>Futur proche:</strong> je vais dire, tu vas dire, il va dire, nous allons dire, vous allez dire, elles vont dire<br>
+                    <strong>Passé composé:</strong> j'ai dit, tu as dit, il a dit, nous avons dit, vous avez dit, elles ont dit<br>
+                    <strong>Impératif:</strong> dis, disons, dites
+                `
+            },
+            {
+                infinitive: "partir",
+                translation: "weggehen",
+                type: "unregelmäßig - Bewegung (être!)",
+                category: "irregular",
+                tenses: `
+                    <strong>Présent:</strong> je pars, tu pars, il part, nous partons, vous partez, elles partent<br>
+                    <strong>Imparfait:</strong> je partais, tu partais, il partait, nous partions, vous partiez, elles partaient<br>
+                    <strong>Futur proche:</strong> je vais partir, tu vas partir, il va partir, nous allons partir, vous allez partir, elles vont partir<br>
+                    <strong>Passé composé:</strong> je suis parti(e), tu es parti(e), il est parti, nous sommes parti(e)s, vous êtes parti(e)s, elles sont parties<br>
+                    <strong>Impératif:</strong> pars, partons, partez
+                `
+            },
+            {
+                infinitive: "sortir",
+                translation: "ausgehen",
+                type: "unregelmäßig - Bewegung (être!)",
+                category: "irregular",
+                tenses: `
+                    <strong>Présent:</strong> je sors, tu sors, il sort, nous sortons, vous sortez, elles sortent<br>
+                    <strong>Imparfait:</strong> je sortais, tu sortais, il sortait, nous sortions, vous sortiez, elles sortaient<br>
+                    <strong>Futur proche:</strong> je vais sortir, tu vas sortir, il va sortir, nous allons sortir, vous allez sortir, elles vont sortir<br>
+                    <strong>Passé composé:</strong> je suis sorti(e), tu es sorti(e), il est sorti, nous sommes sorti(e)s, vous êtes sorti(e)s, elles sont sorties<br>
+                    <strong>Impératif:</strong> sors, sortons, sortez
+                `
+            },
+            {
+                infinitive: "mettre",
+                translation: "setzen, legen",
+                type: "unregelmäßig - häufig",
+                category: "irregular",
+                tenses: `
+                    <strong>Présent:</strong> je mets, tu mets, il met, nous mettons, vous mettez, elles mettent<br>
+                    <strong>Imparfait:</strong> je mettais, tu mettais, il mettait, nous mettions, vous mettiez, elles mettaient<br>
+                    <strong>Futur proche:</strong> je vais mettre, tu vas mettre, il va mettre, nous allons mettre, vous allez mettre, elles vont mettre<br>
+                    <strong>Passé composé:</strong> j'ai mis, tu as mis, il a mis, nous avons mis, vous avez mis, elles ont mis<br>
+                    <strong>Impératif:</strong> mets, mettons, mettez
+                `
+            },
+            {
+                infinitive: "connaître",
+                translation: "kennen",
+                type: "unregelmäßig - wichtig",
+                category: "irregular",
+                tenses: `
+                    <strong>Présent:</strong> je connais, tu connais, il connaît, nous connaissons, vous connaissez, elles connaissent<br>
+                    <strong>Imparfait:</strong> je connaissais, tu connaissais, il connaissait, nous connaissions, vous connaissiez, elles connaissaient<br>
+                    <strong>Futur proche:</strong> je vais connaître, tu vas connaître, il va connaître, nous allons connaître, vous allez connaître, elles vont connaître<br>
+                    <strong>Passé composé:</strong> j'ai connu, tu as connu, il a connu, nous avons connu, vous avez connu, elles ont connu<br>
+                    <strong>Impératif:</strong> connais, connaissons, connaissez
+                `
+            },
+            {
+                infinitive: "écrire",
+                translation: "schreiben",
+                type: "unregelmäßig - häufig",
+                category: "irregular",
+                tenses: `
+                    <strong>Présent:</strong> j'écris, tu écris, il écrit, nous écrivons, vous écrivez, elles écrivent<br>
+                    <strong>Imparfait:</strong> j'écrivais, tu écrivais, il écrivait, nous écrivions, vous écriviez, elles écrivaient<br>
+                    <strong>Futur proche:</strong> je vais écrire, tu vas écrire, il va écrire, nous allons écrire, vous allez écrire, elles vont écrire<br>
+                    <strong>Passé composé:</strong> j'ai écrit, tu as écrit, il a écrit, nous avons écrit, vous avez écrit, elles ont écrit<br>
+                    <strong>Impératif:</strong> écris, écrivons, écrivez
+                `
+            },
+            {
+                infinitive: "lire",
+                translation: "lesen",
+                type: "unregelmäßig - häufig",
+                category: "irregular",
+                tenses: `
+                    <strong>Présent:</strong> je lis, tu lis, il lit, nous lisons, vous lisez, elles lisent<br>
+                    <strong>Imparfait:</strong> je lisais, tu lisais, il lisait, nous lisions, vous lisiez, elles lisaient<br>
+                    <strong>Futur proche:</strong> je vais lire, tu vas lire, il va lire, nous allons lire, vous allez lire, elles vont lire<br>
+                    <strong>Passé composé:</strong> j'ai lu, tu as lu, il a lu, nous avons lu, vous avez lu, elles ont lu<br>
+                    <strong>Impératif:</strong> lis, lisons, lisez
+                `
+            },
+            {
+                infinitive: "boire",
+                translation: "trinken",
+                type: "unregelmäßig - häufig",
+                category: "irregular",
+                tenses: `
+                    <strong>Présent:</strong> je bois, tu bois, il boit, nous buvons, vous buvez, elles boivent<br>
+                    <strong>Imparfait:</strong> je buvais, tu buvais, il buvait, nous buvions, vous buviez, elles buvaient<br>
+                    <strong>Futur proche:</strong> je vais boire, tu vas boire, il va boire, nous allons boire, vous allez boire, elles vont boire<br>
+                    <strong>Passé composé:</strong> j'ai bu, tu as bu, il a bu, nous avons bu, vous avez bu, elles ont bu<br>
+                    <strong>Impératif:</strong> bois, buvons, buvez
+                `
+            },
+            {
+                infinitive: "manger",
+                translation: "essen",
+                type: "regelmäßig mit Besonderheit (-ger)",
+                category: "regular",
+                tenses: `
+                    <strong>Présent:</strong> je mange, tu manges, il mange, nous mangeons, vous mangez, elles mangent<br>
+                    <strong>Imparfait:</strong> je mangeais, tu mangeais, il mangeait, nous mangions, vous mangiez, elles mangeaient<br>
+                    <strong>Futur proche:</strong> je vais manger, tu vas manger, il va manger, nous allons manger, vous allez manger, elles vont manger<br>
+                    <strong>Passé composé:</strong> j'ai mangé, tu as mangé, il a mangé, nous avons mangé, vous avez mangé, elles ont mangé<br>
+                    <strong>Impératif:</strong> mange, mangeons, mangez
+                `
+            },
+            {
+                infinitive: "ouvrir",
+                translation: "öffnen",
+                type: "unregelmäßig - wie -er Verb konjugiert",
+                category: "irregular",
+                tenses: `
+                    <strong>Présent:</strong> j'ouvre, tu ouvres, il ouvre, nous ouvrons, vous ouvrez, elles ouvrent<br>
+                    <strong>Imparfait:</strong> j'ouvrais, tu ouvrais, il ouvrait, nous ouvrions, vous ouvriez, elles ouvraient<br>
+                    <strong>Futur proche:</strong> je vais ouvrir, tu vas ouvrir, il va ouvrir, nous allons ouvrir, vous allez ouvrir, elles vont ouvrir<br>
+                    <strong>Passé composé:</strong> j'ai ouvert, tu as ouvert, il a ouvert, nous avons ouvert, vous avez ouvert, elles ont ouvert<br>
+                    <strong>Impératif:</strong> ouvre, ouvrons, ouvrez
+                `
+            },
+            {
+                infinitive: "offrir",
+                translation: "anbieten",
+                type: "unregelmäßig - wie -er Verb konjugiert",
+                category: "irregular",
+                tenses: `
+                    <strong>Présent:</strong> j'offre, tu offres, il offre, nous offrons, vous offrez, elles offrent<br>
+                    <strong>Imparfait:</strong> j'offrais, tu offrais, il offrait, nous offrions, vous offriez, elles offraient<br>
+                    <strong>Futur proche:</strong> je vais offrir, tu vas offrir, il va offrir, nous allons offrir, vous allez offrir, elles vont offrir<br>
+                    <strong>Passé composé:</strong> j'ai offert, tu as offert, il a offert, nous avons offert, vous avez offert, elles ont offert<br>
+                    <strong>Impératif:</strong> offre, offrons, offrez
+                `
+            },
+            {
+                infinitive: "recevoir",
+                translation: "empfangen",
+                type: "unregelmäßig - wichtig",
+                category: "irregular",
+                tenses: `
+                    <strong>Présent:</strong> je reçois, tu reçois, il reçoit, nous recevons, vous recevez, elles reçoivent<br>
+                    <strong>Imparfait:</strong> je recevais, tu recevais, il recevait, nous recevions, vous receviez, elles recevaient<br>
+                    <strong>Futur proche:</strong> je vais recevoir, tu vas recevoir, il va recevoir, nous allons recevoir, vous allez recevoir, elles vont recevoir<br>
+                    <strong>Passé composé:</strong> j'ai reçu, tu as reçu, il a reçu, nous avons reçu, vous avez reçu, elles ont reçu<br>
+                    <strong>Impératif:</strong> reçois, recevons, recevez
+                `
+            },
+            {
+                infinitive: "apprendre",
+                translation: "lernen",
+                type: "unregelmäßig - von prendre",
+                category: "irregular",
+                tenses: `
+                    <strong>Présent:</strong> j'apprends, tu apprends, il apprend, nous apprenons, vous apprenez, elles apprennent<br>
+                    <strong>Imparfait:</strong> j'apprenais, tu apprenais, il apprenait, nous apprenions, vous appreniez, elles apprenaient<br>
+                    <strong>Futur proche:</strong> je vais apprendre, tu vas apprendre, il va apprendre, nous allons apprendre, vous allez apprendre, elles vont apprendre<br>
+                    <strong>Passé composé:</strong> j'ai appris, tu as appris, il a appris, nous avons appris, vous avez appris, elles ont appris<br>
+                    <strong>Impératif:</strong> apprends, apprenons, apprenez
+                `
+            },
+            {
+                infinitive: "comprendre",
+                translation: "verstehen",
+                type: "unregelmäßig - von prendre",
+                category: "irregular",
+                tenses: `
+                    <strong>Présent:</strong> je comprends, tu comprends, il comprend, nous comprenons, vous comprenez, elles comprennent<br>
+                    <strong>Imparfait:</strong> je comprenais, tu comprenais, il comprenait, nous comprenions, vous compreniez, elles comprenaient<br>
+                    <strong>Futur proche:</strong> je vais comprendre, tu vas comprendre, il va comprendre, nous allons comprendre, vous allez comprendre, elles vont comprendre<br>
+                    <strong>Passé composé:</strong> j'ai compris, tu as compris, il a compris, nous avons compris, vous avez compris, elles ont compris<br>
+                    <strong>Impératif:</strong> comprends, comprenons, comprenez
+                `
+            },
+            {
+                infinitive: "acheter",
+                translation: "kaufen",
+                type: "regelmäßig mit Akzentveränderung",
+                category: "regular",
+                tenses: `
+                    <strong>Présent:</strong> j'achète, tu achètes, il achète, nous achetons, vous achetez, elles achètent<br>
+                    <strong>Imparfait:</strong> j'achetais, tu achetais, il achetait, nous achetions, vous achetiez, elles achetaient<br>
+                    <strong>Futur proche:</strong> je vais acheter, tu vas acheter, il va acheter, nous allons acheter, vous allez acheter, elles vont acheter<br>
+                    <strong>Passé composé:</strong> j'ai acheté, tu as acheté, il a acheté, nous avons acheté, vous avez acheté, elles ont acheté<br>
+                    <strong>Impératif:</strong> achète, achetons, achetez
+                `
+            },
+            {
+                infinitive: "appeler",
+                translation: "anrufen",
+                type: "regelmäßig mit Konsonantenverdopplung",
+                category: "regular",
+                tenses: `
+                    <strong>Présent:</strong> j'appelle, tu appelles, il appelle, nous appelons, vous appelez, elles appellent<br>
+                    <strong>Imparfait:</strong> j'appelais, tu appelais, il appelait, nous appelions, vous appeliez, elles appelaient<br>
+                    <strong>Futur proche:</strong> je vais appeler, tu vas appeler, il va appeler, nous allons appeler, vous allez appeler, elles vont appeler<br>
+                    <strong>Passé composé:</strong> j'ai appelé, tu as appelé, il a appelé, nous avons appelé, vous avez appelé, elles ont appelé<br>
+                    <strong>Impératif:</strong> appelle, appelons, appelez
+                `
+            },
+            {
+                infinitive: "parler",
+                translation: "sprechen",
+                type: "regelmäßig auf -er",
+                category: "regular",
+                tenses: `
+                    <strong>Présent:</strong> je parle, tu parles, il parle, nous parlons, vous parlez, elles parlent<br>
+                    <strong>Imparfait:</strong> je parlais, tu parlais, il parlait, nous parlions, vous parliez, elles parlaient<br>
+                    <strong>Futur proche:</strong> je vais parler, tu vas parler, il va parler, nous allons parler, vous allez parler, elles vont parler<br>
+                    <strong>Passé composé:</strong> j'ai parlé, tu as parlé, il a parlé, nous avons parlé, vous avez parlé, elles ont parlé<br>
+                    <strong>Impératif:</strong> parle, parlons, parlez
+                `
+            },
+            {
+                infinitive: "finir",
+                translation: "beenden",
+                type: "regelmäßig auf -ir",
+                category: "regular",
+                tenses: `
+                    <strong>Présent:</strong> je finis, tu finis, il finit, nous finissons, vous finissez, elles finissent<br>
+                    <strong>Imparfait:</strong> je finissais, tu finissais, il finissait, nous finissions, vous finissiez, elles finissaient<br>
+                    <strong>Futur proche:</strong> je vais finir, tu vas finir, il va finir, nous allons finir, vous allez finir, elles vont finir<br>
+                    <strong>Passé composé:</strong> j'ai fini, tu as fini, il a fini, nous avons fini, vous avez fini, elles ont fini<br>
+                    <strong>Impératif:</strong> finis, finissons, finissez
+                `
+            },
+            {
+                infinitive: "vendre",
+                translation: "verkaufen",
+                type: "regelmäßig auf -re",
+                category: "regular",
+                tenses: `
+                    <strong>Présent:</strong> je vends, tu vends, il vend, nous vendons, vous vendez, elles vendent<br>
+                    <strong>Imparfait:</strong> je vendais, tu vendais, il vendait, nous vendions, vous vendiez, elles vendaient<br>
+                    <strong>Futur proche:</strong> je vais vendre, tu vas vendre, il va vendre, nous allons vendre, vous allez vendre, elles vont vendre<br>
+                    <strong>Passé composé:</strong> j'ai vendu, tu as vendu, il a vendu, nous avons vendu, vous avez vendu, elles ont vendu<br>
+                    <strong>Impératif:</strong> vends, vendons, vendez
+                `
+            },
+            {
+                infinitive: "attendre",
+                translation: "warten",
+                type: "regelmäßig auf -re",
+                category: "regular",
+                tenses: `
+                    <strong>Présent:</strong> j'attends, tu attends, il attend, nous attendons, vous attendez, elles attendent<br>
+                    <strong>Imparfait:</strong> j'attendais, tu attendais, il attendait, nous attendions, vous attendiez, elles attendaient<br>
+                    <strong>Futur proche:</strong> je vais attendre, tu vas attendre, il va attendre, nous allons attendre, vous allez attendre, elles vont attendre<br>
+                    <strong>Passé composé:</strong> j'ai attendu, tu as attendu, il a attendu, nous avons attendu, vous avez attendu, elles ont attendu<br>
+                    <strong>Impératif:</strong> attends, attendons, attendez
+                `
+            },
+            {
+                infinitive: "se lever",
+                translation: "aufstehen",
+                type: "reflexiv - regelmäßig",
+                category: "regular",
+                tenses: `
+                    <strong>Présent:</strong> je me lève, tu te lèves, il se lève, nous nous levons, vous vous levez, elles se lèvent<br>
+                    <strong>Imparfait:</strong> je me levais, tu te levais, il se levait, nous nous levions, vous vous leviez, elles se levaient<br>
+                    <strong>Futur proche:</strong> je vais me lever, tu vas te lever, il va se lever, nous allons nous lever, vous allez vous lever, elles vont se lever<br>
+                    <strong>Passé composé:</strong> je me suis levé(e), tu t'es levé(e), il s'est levé, nous nous sommes levé(e)s, vous vous êtes levé(e)s, elles se sont levées<br>
+                    <strong>Impératif:</strong> lève-toi, levons-nous, levez-vous
+                `
+            }
+        ];
+
+        let currentVerbs = [...allVerbs];
+        let currentCard = 0;
+        let studiedCards = new Set();
+        let isAutoplay = false;
+        let autoplayInterval = null;
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        // Initialize
+        function init() {
+            showCard();
+            setupTouchEvents();
+            setupKeyboardEvents();
+            loadProgress();
+        }
+
+        function showCard() {
+            if (currentVerbs.length === 0) return;
+            
+            const verb = currentVerbs[currentCard];
+            document.getElementById('verb-infinitive').textContent = verb.infinitive;
+            document.getElementById('verb-translation').textContent = verb.translation;
+            document.getElementById('verb-type').textContent = verb.type;
+            document.getElementById('verb-tenses').innerHTML = verb.tenses;
+            
+            // Update info
+            document.getElementById('current-card').textContent = currentCard + 1;
+            document.getElementById('total-cards').textContent = currentVerbs.length;
+            document.getElementById('studied-cards').textContent = studiedCards.size;
+            
+            // Update progress
+            const progress = ((currentCard + 1) / currentVerbs.length) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+            
+            // Reset card flip
+            document.getElementById('flashcard').classList.remove('is-flipped');
+            
+            updateButtons();
+            checkAchievements();
+        }
+
+        function updateButtons() {
+            document.getElementById('prev-btn').disabled = currentCard === 0;
+            document.getElementById('next-btn').disabled = currentCard === currentVerbs.length - 1;
+        }
+
+        function nextCard() {
+            if (currentCard < currentVerbs.length - 1) {
+                studiedCards.add(currentCard);
+                currentCard++;
+                showCard();
+                saveProgress();
+            }
+        }
+
+        function prevCard() {
+            if (currentCard > 0) {
+                currentCard--;
+                showCard();
+            }
+        }
+
+        function toggleCard() {
+            document.getElementById('flashcard').classList.toggle('is-flipped');
+        }
+
+        function setDifficulty(level) {
+            // Update active button
+            document.querySelectorAll('.difficulty-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Filter verbs
+            switch(level) {
+                case 'irregular':
+                    currentVerbs = allVerbs.filter(verb => verb.category === 'irregular');
+                    break;
+                case 'regular':
+                    currentVerbs = allVerbs.filter(verb => verb.category === 'regular');
+                    break;
+                case 'modal':
+                    currentVerbs = allVerbs.filter(verb => verb.category === 'modal');
+                    break;
+                default:
+                    currentVerbs = [...allVerbs];
+            }
+            
+            currentCard = 0;
+            studiedCards.clear();
+            showCard();
+        }
+
+        function shuffleCards() {
+            for (let i = currentVerbs.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [currentVerbs[i], currentVerbs[j]] = [currentVerbs[j], currentVerbs[i]];
+            }
+            currentCard = 0;
+            showCard();
+            showAchievement('🎲 Karten gemischt!');
+        }
+
+        function resetProgress() {
+            studiedCards.clear();
+            currentCard = 0;
+            showCard();
+            localStorage.removeItem('cardProgress');
+            showAchievement('🔄 Fortschritt zurückgesetzt!');
+        }
+
+        function toggleAutoplay() {
+            isAutoplay = !isAutoplay;
+            if (isAutoplay) {
+                autoplayInterval = setInterval(() => {
+                    if (currentCard < currentVerbs.length - 1) {
+                        nextCard();
+                    } else {
+                        toggleAutoplay();
+                    }
+                }, 3000);
+                showAchievement('▶️ Autoplay gestartet!');
+            } else {
+                clearInterval(autoplayInterval);
+                showAchievement('⏸️ Autoplay gestoppt!');
+            }
+        }
+
+        function setupTouchEvents() {
+            const cardContainer = document.getElementById('cardContainer');
+            
+            cardContainer.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+            
+            cardContainer.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+            
+            // Card tap to flip
+            document.getElementById('flashcard').addEventListener('click', toggleCard);
+        }
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // Swipe left - next card
+                    nextCard();
+                } else {
+                    // Swipe right - previous card
+                    prevCard();
+                }
+            }
+        }
+
+        function setupKeyboardEvents() {
+            document.addEventListener('keydown', (e) => {
+                switch(e.key) {
+                    case 'ArrowLeft':
+                        prevCard();
+                        break;
+                    case 'ArrowRight':
+                        nextCard();
+                        break;
+                    case ' ':
+                        e.preventDefault();
+                        toggleCard();
+                        break;
+                    case 'r':
+                        shuffleCards();
+                        break;
+                }
+            });
+        }
+
+        function checkAchievements() {
+            const studiedCount = studiedCards.size;
+            
+            if (studiedCount === 10 && !localStorage.getItem('achievement_10')) {
+                showAchievement('🎉 10 Verben gelernt!');
+                localStorage.setItem('achievement_10', 'true');
+            } else if (studiedCount === 20 && !localStorage.getItem('achievement_20')) {
+                showAchievement('🏆 20 Verben gemeistert!');
+                localStorage.setItem('achievement_20', 'true');
+            } else if (studiedCount === currentVerbs.length && !localStorage.getItem('achievement_all')) {
+                showAchievement('👑 Alle Verben durchgearbeitet!');
+                localStorage.setItem('achievement_all', 'true');
+            }
+        }
+
+        function showAchievement(text) {
+            const achievement = document.getElementById('achievement');
+            achievement.textContent = text;
+            achievement.classList.add('show');
+            
+            setTimeout(() => {
+                achievement.classList.remove('show');
+            }, 3000);
+        }
+
+        function saveProgress() {
+            const progress = {
+                currentCard: currentCard,
+                studiedCards: Array.from(studiedCards)
+            };
+            localStorage.setItem('cardProgress', JSON.stringify(progress));
+        }
+
+        function loadProgress() {
+            const saved = localStorage.getItem('cardProgress');
+            if (saved) {
+                const progress = JSON.parse(saved);
+                currentCard = progress.currentCard || 0;
+                studiedCards = new Set(progress.studiedCards || []);
+            }
+        }
+
+        // Event listeners
+        document.getElementById('prev-btn').addEventListener('click', prevCard);
+        document.getElementById('next-btn').addEventListener('click', nextCard);
+
+        // Initialize app
+        init();
+    </script>
+</body>
+</html>
+
